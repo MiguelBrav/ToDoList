@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[TaskTier]
+(
+	[Id] INT IDENTITY(1,1) NOT NULL, 
+	[TierName] NVARCHAR(100) NOT NULL,
+	[IsActive]	BIT DEFAULT 1,
+	CONSTRAINT [PK_TaskTierId] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
