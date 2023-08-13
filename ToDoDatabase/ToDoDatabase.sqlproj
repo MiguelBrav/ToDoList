@@ -66,5 +66,13 @@
     <Build Include="Dbo\Tables\Language.sql" />
     <Build Include="Dbo\Tables\TaskTier.sql" />
     <Build Include="Dbo\Tables\TaskTierTranslated.sql" />
+    <Build Include="Dbo\Tables\LanguageUserSelection.sql" />
+    <Build Include="Dbo\Tables\Instructions.sql" />
+    <Build Include="Dbo\Tables\InstructionsTranslated.sql" />
+    <Build Include="Dbo\Tables\UserProfile.sql" />
+    <Build Include="Dbo\Tables\Genders.sql" />
+    <Build Include="Dbo\Tables\GendersTranslated.sql" />
+    <Build Include="Dbo\Tables\TaskByUser.sql" />
+    <Build Include="Dbo\Tables\TaskByUserHistorical.sql" />
   </ItemGroup>
 </Project>
