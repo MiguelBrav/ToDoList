@@ -51,15 +51,17 @@ namespace ToDoList.API.Commands
 
         private async Task<ResponseAuth> GenerateToken(LoginUserCommand request)
         {
-            var claims = new List<Claim>()
-            {
-                new Claim("email", request.Email),
 
-            };
 
             var usuario = await _userManager.FindByEmailAsync(request.Email);
 
             var claimsDB = await _userManager.GetClaimsAsync(usuario);
+
+           var claims = new List<Claim>()
+            {
+                new Claim("email", request.Email),
+                new Claim("userId", usuario.Id)
+            };
 
             claims.AddRange(claimsDB);
 
