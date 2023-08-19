@@ -15,6 +15,9 @@ namespace ToDoList.API.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// This method is to add a new user.
+        /// </summary>
         [HttpPost]
         [Route("createUser")]
         public async Task<IActionResult> CreateUserApp([FromBody] CreateUserCommand command)
@@ -28,7 +31,9 @@ namespace ToDoList.API.Controllers
             return StatusCode(responseUser.StatusCode, responseUser);
         }
 
-
+        /// <summary>
+        /// This method is for logging in with a user.
+        /// </summary>
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> LoginUserApp([FromBody] LoginUserCommand command)
