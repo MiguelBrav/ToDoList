@@ -58,10 +58,9 @@
     <Folder Include="Properties" />
     <Folder Include="Dbo" />
     <Folder Include="Dbo\Tables" />
+    <Folder Include="Dbo\Data" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Dbo\Tables\AspNetUsers.sql" />
-    <Build Include="Dbo\Tables\AspNetUserClaims.sql" />
     <Build Include="Dbo\Tables\UsersApp.sql" />
     <Build Include="Dbo\Tables\Language.sql" />
     <Build Include="Dbo\Tables\TaskTier.sql" />
@@ -74,5 +73,9 @@
     <Build Include="Dbo\Tables\GendersTranslated.sql" />
     <Build Include="Dbo\Tables\TaskByUser.sql" />
     <Build Include="Dbo\Tables\TaskByUserHistorical.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dbo\Data\DatabaseInfo.sql" />
+    <None Include="Dbo\Data\ReleaseTables.sql" />
   </ItemGroup>
 </Project>

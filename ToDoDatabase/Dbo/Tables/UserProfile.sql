@@ -4,6 +4,7 @@
     [UserId] NVARCHAR (128) NULL,
 	[UserAppId] BIGINT NOT NULL,
 	[IsActive]	BIT DEFAULT 1,
+	[UrlImage] NVARCHAR(2000) NULL,
 	CONSTRAINT [PK_UserProfileId] PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_UserProfileId_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[AspNetUsers] ([Id]),
 	CONSTRAINT [FK_UserProfileId_UsersAppIdS] FOREIGN KEY ([UserAppId]) REFERENCES [dbo].[UsersApp] ([Id])
