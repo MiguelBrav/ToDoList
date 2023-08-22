@@ -92,12 +92,16 @@ container.RegisterAssemblyTypes(typeof(LoginUserCommandHandler).GetTypeInfo().As
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(ValidateTokenCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
+container.RegisterAssemblyTypes(typeof(TaskTierCommand).GetTypeInfo().Assembly)
+.AsClosedTypesOf(typeof(IRequestHandler<,>));
+
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
    .AddEntityFrameworkStores<AppDBContext>()
    .AddDefaultTokenProviders();
 
 builder.Services.AddTransient<IUsersAppService, UsersAppService>();
+builder.Services.AddTransient<ITaskTierTranslatedService, TaskTierTranslatedService>();
 
 var app = builder.Build();
 

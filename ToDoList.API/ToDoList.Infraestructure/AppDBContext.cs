@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToDoList.DTO.AspNetUsers;
+using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
 
 
@@ -20,6 +21,7 @@ namespace ToDoList.Infraestructure
         }        
          
         public DbSet<UsersApp> UsersApp { get; set; }
+        public DbSet<TaskTierTranslated> TaskTierTranslated { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
