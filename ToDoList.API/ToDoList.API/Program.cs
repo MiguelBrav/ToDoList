@@ -92,7 +92,9 @@ container.RegisterAssemblyTypes(typeof(LoginUserCommandHandler).GetTypeInfo().As
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(ValidateTokenCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(TaskTierCommand).GetTypeInfo().Assembly)
+container.RegisterAssemblyTypes(typeof(TaskTierCommandHandler).GetTypeInfo().Assembly)
+.AsClosedTypesOf(typeof(IRequestHandler<,>));
+container.RegisterAssemblyTypes(typeof(GendersCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 
 
@@ -102,6 +104,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 
 builder.Services.AddTransient<IUsersAppService, UsersAppService>();
 builder.Services.AddTransient<ITaskTierTranslatedService, TaskTierTranslatedService>();
+builder.Services.AddTransient<IGendersTranslatedService, GendersTranslatedService>();
 
 var app = builder.Build();
 

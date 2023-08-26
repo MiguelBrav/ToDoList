@@ -9,34 +9,34 @@ using ToDoList.DTO.Translated;
 namespace ToDoList.API.Controllers
 {
     [Route("[controller]")]
-    public class TaskTierController : ControllerBase
+    public class GendersController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public TaskTierController(IMediator mediator)
+        public GendersController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         /// <summary>
-        /// This method is to get translated tasks tier
+        /// This method is to get translated genders
         /// </summary>
         [HttpGet]
         [AllowAnonymous]
-        [Route("tasktiers/{languageId}")]
-        public async Task<IActionResult> GetTaskTiersTranslated([FromRoute] string languageId)
+        [Route("genders/{languageId}")]
+        public async Task<IActionResult> GetGendersTranslated([FromRoute] string languageId)
         {
 
             if(languageId == null)
                 return StatusCode(StatusCodes.Status400BadRequest);
 
-            TaskTierCommand command = new TaskTierCommand { LanguageId = languageId };
+            GendersCommand command = new GendersCommand { LanguageId = languageId };
 
             ApiResponse responseTaskTiers = await _mediator.Send(command);
 
             if (responseTaskTiers.Response == null || responseTaskTiers.Response is false)
                 return StatusCode(responseTaskTiers.StatusCode, responseTaskTiers.Response);
 
-            return StatusCode(responseTaskTiers.StatusCode, JsonConvert.DeserializeObject<List<TaskTierTranslated>>(responseTaskTiers.ResponseMessage));
+            return StatusCode(responseTaskTiers.StatusCode, JsonConvert.DeserializeObject<List<GendersTranslated>>(responseTaskTiers.ResponseMessage));
         }
     }
 }
