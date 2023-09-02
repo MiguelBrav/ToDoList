@@ -96,7 +96,8 @@ container.RegisterAssemblyTypes(typeof(TaskTierCommandHandler).GetTypeInfo().Ass
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(GendersCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-
+container.RegisterAssemblyTypes(typeof(UserProfileCommandHandler).GetTypeInfo().Assembly)
+.AsClosedTypesOf(typeof(IRequestHandler<,>));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
    .AddEntityFrameworkStores<AppDBContext>()
@@ -105,6 +106,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 builder.Services.AddTransient<IUsersAppService, UsersAppService>();
 builder.Services.AddTransient<ITaskTierTranslatedService, TaskTierTranslatedService>();
 builder.Services.AddTransient<IGendersTranslatedService, GendersTranslatedService>();
+builder.Services.AddTransient<IUsersProfileService, UsersProfileService>();
+
 
 var app = builder.Build();
 

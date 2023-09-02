@@ -23,6 +23,7 @@ namespace ToDoList.Infraestructure
         public DbSet<UsersApp> UsersApp { get; set; }
         public DbSet<TaskTierTranslated> TaskTierTranslated { get; set; }
         public DbSet<GendersTranslated> GendersTranslated { get; set; }
+        public DbSet<UserProfile> UserProfile { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

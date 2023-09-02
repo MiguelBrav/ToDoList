@@ -10,5 +10,7 @@ namespace ToDoList.Domain.Interfaces
     public interface IUsersAppService
     {
         Task SaveUsersApps(UsersApp userApp);
+
+        Task<UsersApp> GetUserApp(string userId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,11 +19,16 @@ namespace ToDoList.Infraestructure.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<UsersApp> GetUserApp(string userId)
+        {
+            return await _dbContext.UsersApp.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+        }
+
         public async Task SaveUsersApps(UsersApp userApp)
         {
             await _dbContext.UsersApp.AddAsync(userApp);
 
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
     }
