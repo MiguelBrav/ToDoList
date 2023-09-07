@@ -12,7 +12,7 @@ using ToDoList.DTO.UsersApp;
 
 namespace ToDoList.API.Commands
 {
-    public class UserProfileCommandHandler : IRequestHandler<UserProfileCommand, ApiResponse>
+    public class DeleteUserProfileCommandHandler : IRequestHandler<DeleteUserProfileCommand, ApiResponse>
     {
         private readonly IUsersAppService _usersAppService;
 
@@ -20,14 +20,14 @@ namespace ToDoList.API.Commands
 
         private readonly IUsersProfileService _usersProfileService;
 
-        public UserProfileCommandHandler(IUsersAppService usersAppService, UserManager<IdentityUser> userManager, IUsersProfileService usersProfileService)
+        public DeleteUserProfileCommandHandler(IUsersAppService usersAppService, UserManager<IdentityUser> userManager, IUsersProfileService usersProfileService)
         {
             _usersAppService = usersAppService;
             _userManager = userManager;
             _usersProfileService = usersProfileService;
         }
 
-        public async Task<ApiResponse> Handle(UserProfileCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse> Handle(DeleteUserProfileCommand request, CancellationToken cancellationToken)
         {
             ApiResponse response = new ApiResponse();
 
@@ -55,27 +55,19 @@ namespace ToDoList.API.Commands
 
             UserProfile userProfile = await _usersProfileService.GetUserProfile(userExists.Id);
 
-            if (userProfile != null)
+            if (userProfile == null)
             {
-                response.Response = true;
-                response.ResponseMessage = "The image already is uploaded.";
-                response.StatusCode = StatusCodes.Status200OK;
+                response.Response = false;
+                response.ResponseMessage = "The previous user image does not exists.";
+                response.StatusCode = StatusCodes.Status204NoContent;
 
                 return response;
             }
-
-            UserProfile newUserProfile = new UserProfile()
-            {
-                UserAppId = userInformation.Id,
-                UserId = userExists.Id,
-                IsActive = true,
-                UrlImage = request.UrlImage
-            };
-
-            await _usersProfileService.SaveUserProfile(newUserProfile);
+            
+            await _usersProfileService.DeleteUserProfile(userProfile);
 
             response.Response = true;
-            response.ResponseMessage = "The image is uploaded successfully.";
+            response.ResponseMessage = "The image is deleted successfully.";
             response.StatusCode = StatusCodes.Status200OK;
 
             return response;
