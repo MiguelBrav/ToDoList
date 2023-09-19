@@ -18,4 +18,17 @@ namespace ToDoList.DTO.UsersApp
 		public int Gender { get; set; }
 
 	}
+
+	public class UserInformation
+	{
+		public long Id { get; set; }
+		public string? UserId { get; set; }
+		public DateTime BirthDate { get; set; }
+		public string? Email { get; set; }
+		public string? Name { get; set; }
+		public DateTime CreatedDate { get; set; }
+		public DateTime LastModificationDate { get; set; }
+		public int Gender { get; set; }
+		public string? UrlImage { get; set; }
+	}
 }
