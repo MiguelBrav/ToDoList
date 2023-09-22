@@ -12,5 +12,7 @@ namespace ToDoList.Domain.Interfaces
         Task SaveUsersApps(UsersApp userApp);
 
         Task<UsersApp> GetUserApp(string userId);
+
+        Task UpdateUserApp(UsersApp userApp);
     }
 }

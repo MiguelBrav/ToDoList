@@ -67,8 +67,7 @@ CREATE TABLE [dbo].[LanguageUserSelection]
 (
 	[Id] INT IDENTITY(1,1) NOT NULL, 
 	[LanguageId] [char](5) NOT NULL,
-    	[UserId] NVARCHAR (128) NULL,
-	[TranslatedDescription] NVARCHAR(2000) NOT NULL,
+    [UserId] NVARCHAR (128) NULL,
 	[IsActive]	BIT DEFAULT 1,
 	CONSTRAINT [PK_LanguageUserSelectionId] PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_LanguageUserSelectionId_LanguageId] FOREIGN KEY ([LanguageId]) REFERENCES [dbo].[Language] ([Id]),
@@ -83,8 +82,10 @@ CREATE TABLE [dbo].[TaskByUser]
 	[TaskName] NVARCHAR(100) NOT NULL,
 	[TaskDescription] NVARCHAR(2000) NOT NULL,
 	[IsDeleted] BIT DEFAULT 0,
+	[IsCompleted] BIT DEFAULT 0,
 	[CreatedUserId] NVARCHAR (128) NULL,
 	[CreatedDate] DATETIME NOT NULL,
+	[ExpectedDateTime] DATETIME NULL,
 	[FinishDate] DATETIME  NULL,
 	[LastModificationDate] DATETIME  NULL
 	CONSTRAINT [PK_TaskByUserId] PRIMARY KEY CLUSTERED ([Id] ASC),

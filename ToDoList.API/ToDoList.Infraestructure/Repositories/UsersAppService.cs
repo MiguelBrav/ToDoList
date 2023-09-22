@@ -31,5 +31,11 @@ namespace ToDoList.Infraestructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task UpdateUserApp(UsersApp userApp)
+        {
+            _dbContext.UsersApp.Update(userApp);
+
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
