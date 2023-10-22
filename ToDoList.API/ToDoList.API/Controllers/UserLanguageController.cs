@@ -47,7 +47,7 @@ namespace ToDoList.API.Controllers
                 if (responseUserLanguage.Response == null || responseUserLanguage.Response is false)
                     return StatusCode(responseUserLanguage.StatusCode, responseUserLanguage.Response);
 
-                return StatusCode(responseUserLanguage.StatusCode, JsonConvert.DeserializeObject<string>(responseUserLanguage.ResponseMessage));
+                return StatusCode(responseUserLanguage.StatusCode, JsonConvert.DeserializeObject<LanguageUserSelection>(responseUserLanguage.ResponseMessage));
 
             }
 
@@ -76,6 +76,39 @@ namespace ToDoList.API.Controllers
                 };
 
                 ApiResponse responseUserLanguage = await _mediator.Send(userLanguageCommand);
+
+                if (responseUserLanguage.Response == null || responseUserLanguage.Response is false)
+                    return StatusCode(responseUserLanguage.StatusCode, responseUserLanguage.Response);
+
+                return StatusCode(responseUserLanguage.StatusCode, JsonConvert.DeserializeObject<LanguageUserSelection>(responseUserLanguage.ResponseMessage));
+
+            }
+
+            return StatusCode(StatusCodes.Status400BadRequest, "Error with token");
+        }
+
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("selection")]
+        public async Task<IActionResult> UpdateLanguageUser([FromBody] string userLanguage)
+        {
+
+            var userClaim = HttpContext.User.Claims.Where(claim => claim.Type == "userId").FirstOrDefault();
+
+            if (userClaim != null)
+            {
+                var userId = userClaim.Value;
+
+                UpdateUserLanguageCommand userLanguageCommand = new UpdateUserLanguageCommand()
+                {
+                    UserId = userId,
+                    LanguageId = userLanguage
+                };
+
+                ApiResponse responseUserLanguage = await _mediator.Send(userLanguageCommand);
+
+                if (responseUserLanguage.StatusCode == 204)
+                    return StatusCode(responseUserLanguage.StatusCode);
 
                 if (responseUserLanguage.Response == null || responseUserLanguage.Response is false)
                     return StatusCode(responseUserLanguage.StatusCode, responseUserLanguage.Response);
