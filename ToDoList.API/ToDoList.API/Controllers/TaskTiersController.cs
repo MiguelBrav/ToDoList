@@ -9,10 +9,10 @@ using ToDoList.DTO.Translated;
 namespace ToDoList.API.Controllers
 {
     [Route("[controller]")]
-    public class TaskTierController : ControllerBase
+    public class TaskTiersController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public TaskTierController(IMediator mediator)
+        public TaskTiersController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -22,7 +22,7 @@ namespace ToDoList.API.Controllers
         /// </summary>
         [HttpGet]
         [AllowAnonymous]
-        [Route("tasktiers/{languageId}")]
+        [Route("{languageId}")]
         public async Task<IActionResult> GetTaskTiersTranslated([FromRoute] string languageId)
         {
 

@@ -22,7 +22,7 @@ namespace ToDoList.API.Controllers
         /// </summary>
         [HttpGet]
         [AllowAnonymous]
-        [Route("genders/{languageId}")]
+        [Route("{languageId}")]
         public async Task<IActionResult> GetGendersTranslated([FromRoute] string languageId)
         {
 
