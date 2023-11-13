@@ -35,20 +35,32 @@ namespace ToDoList.API.Commands
             }
 
 
-            IdentityUser usuario = new IdentityUser
+            IdentityUser user = new IdentityUser
             {
                 UserName = request.Email,
                 Email = request.Email,                
             };
 
-            IdentityResult resultado = await _userManager.CreateAsync(usuario, request.Password);
+            IdentityResult identityResult = await _userManager.CreateAsync(user, request.Password);
 
             IdentityUser newUser = await _userManager.FindByEmailAsync(request.Email);
 
-            if(resultado == null || resultado.Succeeded == false)
+            if (identityResult == null)
             {
                 response.Response = false;
-                response.ResponseMessage = "The user could not register.";
+                response.ResponseMessage = "The user could not register";
+                response.StatusCode = StatusCodes.Status400BadRequest;
+
+                return response;
+            }
+
+            if (identityResult.Succeeded == false)
+            {
+                var errors = identityResult.Errors.Select(error => error.Description);
+                string errorString = errors == null ? "The user could not register" : $"The user could not register, errors: {string.Join(", ", errors)}";
+
+                response.Response = false;
+                response.ResponseMessage = errorString;
                 response.StatusCode = StatusCodes.Status400BadRequest;
 
                 return response;

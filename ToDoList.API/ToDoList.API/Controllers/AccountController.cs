@@ -25,9 +25,6 @@ namespace ToDoList.API.Controllers
 
             ApiResponse responseUser = await _mediator.Send(command);
 
-            if ( responseUser.Response == null || responseUser.Response is false)
-                return StatusCode(responseUser.StatusCode, responseUser.Response);
-
             return StatusCode(responseUser.StatusCode, responseUser);
         }
 
