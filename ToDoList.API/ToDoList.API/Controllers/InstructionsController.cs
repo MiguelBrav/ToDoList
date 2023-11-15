@@ -30,12 +30,12 @@ namespace ToDoList.API.Controllers
 
             InstructionCommand command = new InstructionCommand { LanguageId = languageId };
 
-            ApiResponse responseTaskTiers = await _mediator.Send(command);
+            ApiResponse responseInstructions = await _mediator.Send(command);
 
-            if (responseTaskTiers.Response == null || responseTaskTiers.Response is false)
-                return StatusCode(responseTaskTiers.StatusCode, responseTaskTiers.Response);
+            if (responseInstructions.Response == null || responseInstructions.Response is false)
+                return StatusCode(responseInstructions.StatusCode, responseInstructions.Response);
 
-            return StatusCode(responseTaskTiers.StatusCode, JsonConvert.DeserializeObject<List<InstructionsTranslated>>(responseTaskTiers.ResponseMessage));
+            return StatusCode(responseInstructions.StatusCode, JsonConvert.DeserializeObject<List<InstructionsTranslated>>(responseInstructions.ResponseMessage));
         }
 
         /// <summary>
@@ -46,9 +46,17 @@ namespace ToDoList.API.Controllers
         [Route("{instructionId}/{languageId}")]
         public async Task<IActionResult> GetInstructionsTranslatedById([FromRoute] int instructionId, string languageId)
         {
-            //To Do - Not Implemented
+            if (languageId == null)
+                return StatusCode(StatusCodes.Status400BadRequest);
 
-            return Ok();
+            InstructionByIdCommand command = new InstructionByIdCommand { InstructionId = instructionId, LanguageId = languageId };
+
+            ApiResponse responseInstruction = await _mediator.Send(command);
+
+            if (responseInstruction.Response == null || responseInstruction.Response is false)
+                return StatusCode(responseInstruction.StatusCode, responseInstruction.Response);
+
+            return StatusCode(responseInstruction.StatusCode, JsonConvert.DeserializeObject<InstructionsTranslated>(responseInstruction.ResponseMessage));
         }
     }
 }

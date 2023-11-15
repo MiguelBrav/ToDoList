@@ -23,6 +23,11 @@ namespace ToDoList.Infraestructure.Repositories
         public async Task<List<InstructionsTranslated>> GetInstructionsTranslateds(string languageId)
         {
             return await _dbContext.InstructionsTranslated.Where(x => x.LanguageId == languageId).ToListAsync();
-        }   
+        }
+
+        public async Task<InstructionsTranslated> GetInstructionTranslatedById(int instructionId, string languageId)
+        {
+            return await _dbContext.InstructionsTranslated.Where(x => x.LanguageId == languageId && x.OriginalInstructionId == instructionId).FirstOrDefaultAsync();
+        }
     }
 }
