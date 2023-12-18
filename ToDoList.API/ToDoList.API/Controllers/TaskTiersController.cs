@@ -38,5 +38,26 @@ namespace ToDoList.API.Controllers
 
             return StatusCode(responseTaskTiers.StatusCode, JsonConvert.DeserializeObject<List<TaskTierTranslated>>(responseTaskTiers.ResponseMessage));
         }
+
+        /// <summary>
+        /// This method is to get one translated task tier by id
+        /// </summary>
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("{tasktierId}/{languageId}")]
+        public async Task<IActionResult> GetTaskTierTranslatedById([FromRoute] int tasktierId, string languageId)
+        {
+            if (languageId == null)
+                return StatusCode(StatusCodes.Status400BadRequest);
+
+            TaskTierByIdCommand command = new TaskTierByIdCommand { TaskTierId = tasktierId, LanguageId = languageId };
+
+            ApiResponse responseInstruction = await _mediator.Send(command);
+
+            if (responseInstruction.Response == null || responseInstruction.Response is false)
+                return StatusCode(responseInstruction.StatusCode, responseInstruction.Response);
+
+            return StatusCode(responseInstruction.StatusCode, JsonConvert.DeserializeObject<TaskTierTranslated>(responseInstruction.ResponseMessage));
+        }
     }
 }

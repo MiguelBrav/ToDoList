@@ -11,5 +11,7 @@ namespace ToDoList.Domain.Interfaces
     public interface ITaskTierTranslatedService
     {
         Task<List<TaskTierTranslated>> GetTasksTranslated(string languageId);
+        Task<TaskTierTranslated> GetTaskTranslatedById(int tasktierId, string languageId);
+
     }
 }

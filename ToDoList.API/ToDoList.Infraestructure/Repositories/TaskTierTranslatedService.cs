@@ -25,5 +25,9 @@ namespace ToDoList.Infraestructure.Repositories
             return await _dbContext.TaskTierTranslated.Where(x => x.LanguageId == languageId).ToListAsync();
         }
 
+        public async Task<TaskTierTranslated> GetTaskTranslatedById(int tasktierId, string languageId)
+        {
+            return await _dbContext.TaskTierTranslated.Where(x => x.LanguageId == languageId && x.OriginalTaskTierId == tasktierId).FirstOrDefaultAsync();
+        }
     }
 }
