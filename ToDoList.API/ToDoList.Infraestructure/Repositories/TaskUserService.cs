@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,20 @@ namespace ToDoList.Infraestructure.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<List<TaskByUser>> GetTasksByUser(string userId, int pageId, int sizeId, int taskTierId, int orderById)
+        {
+            List<TaskByUser> result = await _dbContext.TaskByUser
+                            .FromSqlRaw("EXEC [dbo].[GetTasksByUserId] @UserId, @TaskTierId, @OrderBy, @PageSize, @PageNumber ",
+                                new SqlParameter("@UserId", userId),
+                                new SqlParameter("@PageNumber", pageId),
+                                new SqlParameter("@PageSize", sizeId),
+                                new SqlParameter("@TaskTierId", taskTierId),
+                                new SqlParameter("@OrderBy", orderById))
+                            .ToListAsync();
+
+            return result;
+        }
+
         public async Task<TaskByUser> SaveUserTask(TaskByUser userTask)
         {
             await _dbContext.TaskByUser.AddAsync(userTask);
@@ -27,6 +42,8 @@ namespace ToDoList.Infraestructure.Repositories
 
             return userTask;
         }
+
+
 
     }
 }

@@ -59,6 +59,7 @@
     <Folder Include="Dbo" />
     <Folder Include="Dbo\Tables" />
     <Folder Include="Dbo\Data" />
+    <Folder Include="Dbo\StoreProcedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Dbo\Tables\UsersApp.sql" />
@@ -73,6 +74,8 @@
     <Build Include="Dbo\Tables\GendersTranslated.sql" />
     <Build Include="Dbo\Tables\TaskByUser.sql" />
     <Build Include="Dbo\Tables\TaskByUserHistorical.sql" />
+    <Build Include="Dbo\StoreProcedures\GetTasksByUserId.sql" />
+    <Build Include="Dbo\Tables\AspNetUsers.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dbo\Data\DatabaseInfo.sql" />
