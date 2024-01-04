@@ -20,6 +20,26 @@ namespace ToDoList.Infraestructure.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<bool> CancelTasksByUserAndIds(string userId, int[] tasksIds)
+        {
+            try
+            {
+                _dbContext.TaskByUser
+                    .Where(task => !task.IsDeleted && task.CreatedUserId == userId && tasksIds.Contains(task.Id))
+                    .ToList()
+                    .ForEach(task => task.IsDeleted = true);
+
+                await _dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+
         public async Task<List<TaskByUser>> GetTasksByUser(string userId, int pageId, int sizeId, int taskTierId, int orderById)
         {
             List<TaskByUser> result = await _dbContext.TaskByUser

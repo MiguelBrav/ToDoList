@@ -98,5 +98,43 @@ namespace ToDoList.API.Controllers
 
             return StatusCode(StatusCodes.Status400BadRequest, "Error with token");
         }
+
+        /// <summary>
+        /// This method is to cancel a list of tasks from user by taskIds
+        /// </summary>
+        [HttpDelete]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("cancel/tasks")]
+        public async Task<IActionResult> CancelTasksByUser([FromBody] int[] TaskIds)
+        {
+
+            if(TaskIds.Length == 0 || TaskIds == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Task ids are not valid");
+            }
+
+            var userClaim = HttpContext.User.Claims.Where(claim => claim.Type == "userId").FirstOrDefault();
+
+            if (userClaim != null)
+            {
+                var userId = userClaim.Value;
+
+                CancelTasksCommand taskCommand = new CancelTasksCommand()
+                {
+                    UserId = userId,
+                    TaskIds = TaskIds
+                };
+
+                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+
+                if (responseTasks.Response == null || responseTasks.Response is false)
+                    return StatusCode(responseTasks.StatusCode, responseTasks.Response);
+
+                return StatusCode(responseTasks.StatusCode, responseTasks.Response);
+
+            }
+
+            return StatusCode(StatusCodes.Status400BadRequest, "Error with token");
+        }
     }
 }

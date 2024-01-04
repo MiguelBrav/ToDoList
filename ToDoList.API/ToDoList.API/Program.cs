@@ -120,6 +120,8 @@ container.RegisterAssemblyTypes(typeof(TaskTierByIdCommandHandler).GetTypeInfo()
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(GetUserTaskCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
+container.RegisterAssemblyTypes(typeof(CancelTasksCommandHandler).GetTypeInfo().Assembly)
+.AsClosedTypesOf(typeof(IRequestHandler<,>));
 
 
 
