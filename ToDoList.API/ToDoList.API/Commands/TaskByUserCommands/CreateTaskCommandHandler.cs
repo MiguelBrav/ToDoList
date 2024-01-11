@@ -6,7 +6,7 @@ using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
 
-namespace ToDoList.API.Commands
+namespace ToDoList.API.Commands.TaskByUserCommands
 {
     public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, ApiResponse>
     {

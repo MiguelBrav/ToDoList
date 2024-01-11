@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using ToDoList.API.Commands;
+using ToDoList.API.Commands.TaskByUserCommands;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.DTO;
 using ToDoList.DTO.Translated;
@@ -123,6 +124,38 @@ namespace ToDoList.API.Controllers
                 {
                     UserId = userId,
                     TaskIds = TaskIds
+                };
+
+                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+
+                if (responseTasks.Response == null || responseTasks.Response is false)
+                    return StatusCode(responseTasks.StatusCode, responseTasks.Response);
+
+                return StatusCode(responseTasks.StatusCode, responseTasks.Response);
+
+            }
+
+            return StatusCode(StatusCodes.Status400BadRequest, "Error with token");
+        }
+
+        /// <summary>
+        /// This method is to cancel all tasks from user 
+        /// </summary>
+        [HttpDelete]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("cancel/all/tasks")]
+        public async Task<IActionResult> CancelAllTasksByUser()
+        {
+
+            var userClaim = HttpContext.User.Claims.Where(claim => claim.Type == "userId").FirstOrDefault();
+
+            if (userClaim != null)
+            {
+                var userId = userClaim.Value;
+
+                CancelAllTasksCommand taskCommand = new CancelAllTasksCommand()
+                {
+                    UserId = userId
                 };
 
                 ApiResponse responseTasks = await _mediator.Send(taskCommand);

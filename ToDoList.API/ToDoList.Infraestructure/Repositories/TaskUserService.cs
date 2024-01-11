@@ -54,6 +54,22 @@ namespace ToDoList.Infraestructure.Repositories
             return result;
         }
 
+        public async Task<bool> CancelAllTasksByUser(string userId)
+        {
+            try
+            {
+                var sql = "UPDATE [dbo].[TaskByUser] SET IsDeleted = 1 WHERE IsDeleted = 0 AND CreatedUserId = @userId";
+
+                await _dbContext.Database.ExecuteSqlRawAsync(sql, new SqlParameter("@userId", userId));
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public async Task<TaskByUser> SaveUserTask(TaskByUser userTask)
         {
             await _dbContext.TaskByUser.AddAsync(userTask);

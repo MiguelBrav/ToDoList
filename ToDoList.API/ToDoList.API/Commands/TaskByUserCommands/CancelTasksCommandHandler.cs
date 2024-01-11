@@ -6,7 +6,7 @@ using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
 
-namespace ToDoList.API.Commands
+namespace ToDoList.API.Commands.TaskByUserCommands
 {
     public class CancelTasksCommandHandler : IRequestHandler<CancelTasksCommand, ApiResponse>
     {
@@ -49,8 +49,8 @@ namespace ToDoList.API.Commands
 
                 return response;
             }
-                        
-            bool taskCanceled = await _taskUserService.CancelTasksByUserAndIds(request.UserId,request.TaskIds);
+
+            bool taskCanceled = await _taskUserService.CancelTasksByUserAndIds(request.UserId, request.TaskIds);
 
             response.Response = taskCanceled;
             response.ResponseMessage = "Tasks were canceled";

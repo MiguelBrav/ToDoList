@@ -2,7 +2,7 @@
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.DTO;
 
-namespace ToDoList.API.Commands
+namespace ToDoList.API.Commands.TaskByUserCommands
 {
     public class CancelTasksCommand : IRequest<ApiResponse>
     {
