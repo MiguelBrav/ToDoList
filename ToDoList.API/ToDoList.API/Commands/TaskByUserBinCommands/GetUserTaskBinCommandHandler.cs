@@ -9,9 +9,9 @@ using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
 
-namespace ToDoList.API.Commands
+namespace ToDoList.API.Commands.TaskByUserBinCommands
 {
-    public class GetUserTaskCommandHandler : IRequestHandler<GetUserTasksCommand, ApiResponse>
+    public class GetUserTaskBinCommandHandler : IRequestHandler<GetUserTasksBinCommand, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -25,7 +25,7 @@ namespace ToDoList.API.Commands
         private readonly IConfiguration _configuration;
 
         private readonly string _defaultLanguage;
-        public GetUserTaskCommandHandler(UserManager<IdentityUser> userManager, IUsersAppService usersAppService, ITaskUserService taskUserService, ITaskTierTranslatedService taskTierTranslatedService, IConfiguration configuration)
+        public GetUserTaskBinCommandHandler(UserManager<IdentityUser> userManager, IUsersAppService usersAppService, ITaskUserService taskUserService, ITaskTierTranslatedService taskTierTranslatedService, IConfiguration configuration)
         {
             _userManager = userManager;
             _usersAppService = usersAppService;
@@ -35,7 +35,7 @@ namespace ToDoList.API.Commands
             _defaultLanguage = _configuration.GetValue<string>("DefaultLanguage");
         }
 
-        public async Task<ApiResponse> Handle(GetUserTasksCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse> Handle(GetUserTasksBinCommand request, CancellationToken cancellationToken)
         {
             ApiResponse response = new ApiResponse();
 
@@ -61,12 +61,12 @@ namespace ToDoList.API.Commands
                 return response;
             }
 
-            List<TaskByUser> tasksByUser = await  _taskUserService.GetTasksByUser(request.UserId,request.PageId,request.SizeId,request.TaskTierId,request.OrderById);
+            List<TaskByUser> tasksByUser = await  _taskUserService.GetTasksByUserBin(request.UserId,request.PageId,request.SizeId,request.TaskTierId,request.OrderById);
 
             if (tasksByUser == null || tasksByUser.Count == 0)
             {
                 response.Response = false;
-                response.ResponseMessage = "The user has no tasks created.";
+                response.ResponseMessage = "The user has no tasks deleted.";
                 response.StatusCode = StatusCodes.Status204NoContent;
 
                 return response;

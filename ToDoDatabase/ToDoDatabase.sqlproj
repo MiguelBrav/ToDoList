@@ -76,6 +76,7 @@
     <Build Include="Dbo\Tables\TaskByUserHistorical.sql" />
     <Build Include="Dbo\StoreProcedures\GetTasksByUserId.sql" />
     <Build Include="Dbo\Tables\AspNetUsers.sql" />
+    <Build Include="Dbo\StoreProcedures\GetTasksByUserIdBin.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dbo\Data\DatabaseInfo.sql" />

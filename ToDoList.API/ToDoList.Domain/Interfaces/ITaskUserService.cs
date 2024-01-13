@@ -13,6 +13,7 @@ namespace ToDoList.Domain.Interfaces
     {
         Task<TaskByUser> SaveUserTask(TaskByUser userTask);
         Task<List<TaskByUser>> GetTasksByUser(string userId, int pageId, int sizeId, int taskTierId, int orderById);
+        Task<List<TaskByUser>> GetTasksByUserBin(string userId, int pageId, int sizeId, int taskTierId, int orderById);
         Task<bool> CancelTasksByUserAndIds(string userId, int[] tasksIds);
         Task<bool> CancelAllTasksByUser(string userId);
     }

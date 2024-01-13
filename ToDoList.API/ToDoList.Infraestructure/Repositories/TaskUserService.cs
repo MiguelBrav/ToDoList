@@ -54,6 +54,21 @@ namespace ToDoList.Infraestructure.Repositories
             return result;
         }
 
+        public async Task<List<TaskByUser>> GetTasksByUserBin(string userId, int pageId, int sizeId, int taskTierId, int orderById)
+        {
+            List<TaskByUser> result = await _dbContext.TaskByUser
+                            .FromSqlRaw("EXEC [dbo].[GetTasksByUserIdBin] @UserId, @TaskTierId, @OrderBy, @PageSize, @PageNumber ",
+                                new SqlParameter("@UserId", userId),
+                                new SqlParameter("@PageNumber", pageId),
+                                new SqlParameter("@PageSize", sizeId),
+                                new SqlParameter("@TaskTierId", taskTierId),
+                                new SqlParameter("@OrderBy", orderById))
+                            .ToListAsync();
+
+            return result;
+        }
+
+
         public async Task<bool> CancelAllTasksByUser(string userId)
         {
             try
