@@ -87,6 +87,10 @@ namespace ToDoList.API.Controllers
             return StatusCode(StatusCodes.Status400BadRequest, "Error with token");
         }
 
+
+        /// <summary>
+        /// This method is to update user language selection
+        /// </summary>
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Route("selection")]

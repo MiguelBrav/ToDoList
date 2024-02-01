@@ -94,7 +94,25 @@ namespace ToDoList.Infraestructure.Repositories
             return userTask;
         }
 
+        public async Task<TaskByUser> GetTaskByIdAndUser(string userId, int taskId)
+        {
+            return await _dbContext.TaskByUser.Where(x => x.Id == taskId && x.CreatedUserId == userId && !x.IsDeleted).FirstOrDefaultAsync();
+        }
 
+        public async Task<bool> UpdateTask(TaskByUser userTask)
+        {
+            try
+            {
+                _dbContext.TaskByUser.Update(userTask);
 
+                await _dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

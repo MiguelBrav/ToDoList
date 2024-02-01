@@ -169,5 +169,38 @@ namespace ToDoList.API.Controllers
 
             return StatusCode(StatusCodes.Status400BadRequest, "Error with token");
         }
+
+        /// <summary>
+        /// This method is to update a task from user
+        /// </summary>
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("update")]
+        public async Task<IActionResult> UpdateTaskByUser([FromBody] TaskUpdateDTO updateTask)
+        {
+
+            var userClaim = HttpContext.User.Claims.Where(claim => claim.Type == "userId").FirstOrDefault();
+
+            if (userClaim != null)
+            {
+                var userId = userClaim.Value;
+
+                UpdateTaskCommand taskCommand = new UpdateTaskCommand()
+                {
+                    UserId = userId,
+                    UpdateTask = updateTask
+                };
+
+                ApiResponse responseTask = await _mediator.Send(taskCommand);
+
+                if (responseTask.Response == null || responseTask.Response is false)
+                    return StatusCode(responseTask.StatusCode, responseTask.Response);
+
+                return StatusCode(responseTask.StatusCode, responseTask.ResponseMessage);
+
+            }
+
+            return StatusCode(StatusCodes.Status400BadRequest, "Error with token");
+        }
     }
 }

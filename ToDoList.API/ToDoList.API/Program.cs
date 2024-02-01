@@ -128,7 +128,8 @@ container.RegisterAssemblyTypes(typeof(CancelAllTasksCommandHandler).GetTypeInfo
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(GetUserTaskBinCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-
+container.RegisterAssemblyTypes(typeof(UpdateTaskCommandHandler).GetTypeInfo().Assembly)
+.AsClosedTypesOf(typeof(IRequestHandler<,>));
 
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
