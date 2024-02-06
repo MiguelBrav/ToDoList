@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using ToDoList.API.Commands;
 using ToDoList.API.Commands.TaskByUserBinCommands;
+using ToDoList.API.Commands.TaskByUserCommands;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.DTO;
 using ToDoList.DTO.Translated;
@@ -61,6 +62,44 @@ namespace ToDoList.API.Controllers
                     return StatusCode(responseTasks.StatusCode, responseTasks.Response);
 
                 return StatusCode(responseTasks.StatusCode, JsonConvert.DeserializeObject<List<TaskByUser>>(responseTasks.ResponseMessage));
+
+            }
+
+            return StatusCode(StatusCodes.Status400BadRequest, "Error with token");
+        }
+
+        /// <summary>
+        /// This method is to restore a list of canceled tasks from user by taskIds
+        /// </summary>
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("restore/tasks")]
+        public async Task<IActionResult> RestoreTasksByUser([FromBody] int[] TaskIds)
+        {
+
+            if (TaskIds.Length == 0 || TaskIds == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Task ids are not valid");
+            }
+
+            var userClaim = HttpContext.User.Claims.Where(claim => claim.Type == "userId").FirstOrDefault();
+
+            if (userClaim != null)
+            {
+                var userId = userClaim.Value;
+
+                RestoreTasksCommand taskCommand = new RestoreTasksCommand()
+                {
+                    UserId = userId,
+                    TaskIds = TaskIds
+                };
+
+                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+
+                if (responseTasks.Response == null || responseTasks.Response is false)
+                    return StatusCode(responseTasks.StatusCode, responseTasks.Response);
+
+                return StatusCode(responseTasks.StatusCode, responseTasks.Response);
 
             }
 

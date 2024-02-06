@@ -114,5 +114,25 @@ namespace ToDoList.Infraestructure.Repositories
                 return false;
             }
         }
+
+        public async Task<bool> RestoreTasksByUserAndIds(string userId, int[] tasksIds)
+        {
+            try
+            {
+                _dbContext.TaskByUser
+                    .Where(task => task.IsDeleted && task.CreatedUserId == userId && tasksIds.Contains(task.Id))
+                    .ToList()
+                    .ForEach(task => task.IsDeleted = false);
+
+                await _dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
     }
 }
