@@ -19,5 +19,7 @@ namespace ToDoList.Domain.Interfaces
         Task<bool> CancelAllTasksByUser(string userId);
         Task<bool> UpdateTask(TaskByUser userTask);
         Task<bool> RestoreTasksByUserAndIds(string userId, int[] tasksIds);
+        Task<bool> RestoreAllTasksByUser(string userId);
+
     }
 }

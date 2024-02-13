@@ -134,5 +134,21 @@ namespace ToDoList.Infraestructure.Repositories
             }
 
         }
+
+        public async Task<bool> RestoreAllTasksByUser(string userId)
+        {
+            try
+            {
+                var sql = "UPDATE [dbo].[TaskByUser] SET IsDeleted = 0 WHERE IsDeleted = 1 AND CreatedUserId = @userId";
+
+                await _dbContext.Database.ExecuteSqlRawAsync(sql, new SqlParameter("@userId", userId));
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

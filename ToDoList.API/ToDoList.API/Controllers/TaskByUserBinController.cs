@@ -106,5 +106,37 @@ namespace ToDoList.API.Controllers
             return StatusCode(StatusCodes.Status400BadRequest, "Error with token");
         }
 
+        /// <summary>
+        /// This method is to restore all canceled tasks from user 
+        /// </summary>
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("restore/all/tasks")]
+        public async Task<IActionResult> RestoreAllTasksByUser()
+        {
+
+            var userClaim = HttpContext.User.Claims.Where(claim => claim.Type == "userId").FirstOrDefault();
+
+            if (userClaim != null)
+            {
+                var userId = userClaim.Value;
+
+                RestoreAllTasksCommand taskCommand = new RestoreAllTasksCommand()
+                {
+                    UserId = userId
+                };
+
+                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+
+                if (responseTasks.Response == null || responseTasks.Response is false)
+                    return StatusCode(responseTasks.StatusCode, responseTasks.Response);
+
+                return StatusCode(responseTasks.StatusCode, responseTasks.Response);
+
+            }
+
+            return StatusCode(StatusCodes.Status400BadRequest, "Error with token");
+        }
+
     }
 }
