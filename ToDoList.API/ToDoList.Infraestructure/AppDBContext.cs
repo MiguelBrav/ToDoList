@@ -27,6 +27,7 @@ namespace ToDoList.Infraestructure
         public DbSet<LanguageUserSelection> LanguageUserSelection { get; set; }
         public DbSet<InstructionsTranslated> InstructionsTranslated { get; set; }
         public DbSet<TaskByUser> TaskByUser { get; set; }
+        public DbSet<TaskByUserHistorical> TaskByUserHistorical { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

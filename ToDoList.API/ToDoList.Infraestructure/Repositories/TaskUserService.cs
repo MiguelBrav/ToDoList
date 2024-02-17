@@ -150,5 +150,29 @@ namespace ToDoList.Infraestructure.Repositories
                 return false;
             }
         }
+
+        public async Task<List<TaskByUser>> GetTasksBinByUserId(string userId, int[] tasksIds)
+        {
+            return await _dbContext.TaskByUser
+                    .Where(x => tasksIds.Contains(x.Id) && x.CreatedUserId == userId && x.IsDeleted)
+                    .ToListAsync();
+            
+        }
+        public async Task<bool> CleanTasksBinByUserId(List<TaskByUser> tasksToClean)
+        {
+            try
+            {
+                _dbContext.TaskByUser.RemoveRange(tasksToClean);
+
+                await _dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
     }
 }

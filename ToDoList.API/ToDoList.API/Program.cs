@@ -132,6 +132,8 @@ container.RegisterAssemblyTypes(typeof(UpdateTaskCommandHandler).GetTypeInfo().A
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(RestoreTasksCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
+container.RegisterAssemblyTypes(typeof(CleanTasksCommandHandler).GetTypeInfo().Assembly)
+.AsClosedTypesOf(typeof(IRequestHandler<,>));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
    .AddEntityFrameworkStores<AppDBContext>()
@@ -144,7 +146,7 @@ builder.Services.AddTransient<IUsersProfileService, UsersProfileService>();
 builder.Services.AddTransient<IUserLanguageSelectionService, LanguageUserSelectionService>();
 builder.Services.AddTransient<IInstructionsTranslatedService, InstructionsTranslatedService>();
 builder.Services.AddTransient<ITaskUserService, TaskUserService>();
-
+builder.Services.AddTransient<ITaskUserHistoricalService, TaskUserHistoricalService>();
 
 var app = builder.Build();
 
