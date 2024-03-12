@@ -15,6 +15,7 @@ namespace ToDoList.Domain.Interfaces
         Task<List<TaskByUser>> GetTasksByUser(string userId, int pageId, int sizeId, int taskTierId, int orderById);
         Task<List<TaskByUser>> GetTasksByUserBin(string userId, int pageId, int sizeId, int taskTierId, int orderById);
         Task<List<TaskByUser>> GetTasksBinByUserId(string userId, int[] tasksIds);
+        Task<List<TaskByUser>> GetAllTasksBinByUserId(string userId);
         Task<TaskByUser> GetTaskByIdAndUser(string userId, int taskId);
         Task<bool> CancelTasksByUserAndIds(string userId, int[] tasksIds);
         Task<bool> CancelAllTasksByUser(string userId);

@@ -134,6 +134,8 @@ container.RegisterAssemblyTypes(typeof(RestoreTasksCommandHandler).GetTypeInfo()
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(CleanTasksCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
+container.RegisterAssemblyTypes(typeof(CleansAllTasksCommandHandler).GetTypeInfo().Assembly)
+.AsClosedTypesOf(typeof(IRequestHandler<,>));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
    .AddEntityFrameworkStores<AppDBContext>()

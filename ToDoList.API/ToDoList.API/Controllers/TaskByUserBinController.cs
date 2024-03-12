@@ -176,5 +176,37 @@ namespace ToDoList.API.Controllers
             return StatusCode(StatusCodes.Status400BadRequest, "Error with token");
         }
 
+        /// <summary>
+        /// This method is to complete deleted a list of canceled tasks from user by taskIds
+        /// </summary>
+        [HttpDelete]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("clean/all/tasks")]
+        public async Task<IActionResult> CleanAllBinTasksByUser()
+        {
+
+            var userClaim = HttpContext.User.Claims.Where(claim => claim.Type == "userId").FirstOrDefault();
+
+            if (userClaim != null)
+            {
+                var userId = userClaim.Value;
+
+                CleansAllTasksCommand taskCommand = new CleansAllTasksCommand()
+                {
+                    UserId = userId
+                };
+
+                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+
+                if (responseTasks.Response == null || responseTasks.Response is false)
+                    return StatusCode(responseTasks.StatusCode, responseTasks.Response);
+
+                return StatusCode(responseTasks.StatusCode, responseTasks.Response);
+
+            }
+
+            return StatusCode(StatusCodes.Status400BadRequest, "Error with token");
+        }
+
     }
 }
