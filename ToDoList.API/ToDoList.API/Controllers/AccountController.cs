@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ToDoList.API.Commands;
+using ToDoList.API.Commands.AdminCommands;
 using ToDoList.DTO.ApiResponse;
 
 namespace ToDoList.API.Controllers
@@ -42,6 +43,38 @@ namespace ToDoList.API.Controllers
                 return StatusCode(responseUser.StatusCode, responseUser.Response);
 
             return StatusCode(responseUser.StatusCode, JsonConvert.DeserializeObject<ResponseAuth>(responseUser.ResponseMessage));
+        }
+
+        /// <summary>
+        /// This method is to add admin role for an user.
+        /// </summary>
+        [HttpPost]
+        [Route("admin")]
+        public async Task<IActionResult> AddUserRoleAdminApp([FromBody] UserAdminCommand command)
+        {
+
+            ApiResponse responseUser = await _mediator.Send(command);
+
+            if (responseUser.Response == null || responseUser.Response is false)
+                return StatusCode(responseUser.StatusCode, responseUser.Response);
+
+            return StatusCode(responseUser.StatusCode, responseUser.Response);
+        }
+
+        /// <summary>
+        /// This method is to delete admin role for an user.
+        /// </summary>
+        [HttpDelete]
+        [Route("admin")]
+        public async Task<IActionResult> DeleteUserRoleAdminApp([FromBody] RemoveUserAdminCommand command)
+        {
+
+            ApiResponse responseUser = await _mediator.Send(command);
+
+            if (responseUser.Response == null || responseUser.Response is false)
+                return StatusCode(responseUser.StatusCode, responseUser.Response);
+
+            return StatusCode(responseUser.StatusCode, responseUser.Response);
         }
     }
 }

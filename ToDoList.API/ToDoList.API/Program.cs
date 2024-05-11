@@ -10,6 +10,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Text;
 using ToDoList.API.Commands;
+using ToDoList.API.Commands.AdminCommands;
+using ToDoList.API.Commands.ReportCommands;
 using ToDoList.API.Commands.TaskByUserBinCommands;
 using ToDoList.API.Commands.TaskByUserCommands;
 using ToDoList.Domain.Interfaces;
@@ -136,10 +138,22 @@ container.RegisterAssemblyTypes(typeof(CleanTasksCommandHandler).GetTypeInfo().A
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(CleansAllTasksCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
+container.RegisterAssemblyTypes(typeof(UserAdminCommandHandler).GetTypeInfo().Assembly)
+.AsClosedTypesOf(typeof(IRequestHandler<,>));
+container.RegisterAssemblyTypes(typeof(RemoveUserAdminCommandHandler).GetTypeInfo().Assembly)
+.AsClosedTypesOf(typeof(IRequestHandler<,>));
+container.RegisterAssemblyTypes(typeof(GetUserTasksExcelCommandHandler).GetTypeInfo().Assembly)
+.AsClosedTypesOf(typeof(IRequestHandler<,>));
+container.RegisterAssemblyTypes(typeof(GetUserTasksBinExcelCommandHandler).GetTypeInfo().Assembly)
+.AsClosedTypesOf(typeof(IRequestHandler<,>));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
    .AddEntityFrameworkStores<AppDBContext>()
    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy(builder.Configuration["PolicyAdmin"], policy => policy.RequireClaim(builder.Configuration["PolicyAdminClaim"]));
+});
 
 builder.Services.AddTransient<IUsersAppService, UsersAppService>();
 builder.Services.AddTransient<ITaskTierTranslatedService, TaskTierTranslatedService>();

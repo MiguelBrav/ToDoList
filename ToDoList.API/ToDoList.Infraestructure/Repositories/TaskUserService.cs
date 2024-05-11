@@ -167,6 +167,14 @@ namespace ToDoList.Infraestructure.Repositories
 
         }
 
+        public async Task<List<TaskByUser>> GeAllTasksByUserId(string userId)
+        {
+            return await _dbContext.TaskByUser
+                    .Where(x => x.CreatedUserId == userId && !x.IsDeleted)
+                    .ToListAsync();
+
+        }
+
         public async Task<bool> CleanTasksBinByUserId(List<TaskByUser> tasksToClean)
         {
             try
