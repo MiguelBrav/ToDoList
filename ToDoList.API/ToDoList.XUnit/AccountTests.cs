@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using System.Text.Json;
 using ToDoList.API.Commands;
+using ToDoList.API.Commands.AdminCommands;
 using ToDoList.DTO.ApiResponse;
 using Xunit;
 
@@ -160,5 +161,204 @@ public class AccountTests
         Assert.IsType<ApiResponse>(response);
         Assert.IsType<ResponseAuth>(JsonSerializer.Deserialize<ResponseAuth>(response.ResponseMessage));
 
+    }
+
+    [Theory]
+    [InlineData("usertoAdmin@example.com", "6dffa9ce-d97f-48ae-ad1e-86d81da4a745")]
+    public async Task MakeUserAdmin_ReturnsStatusCode400_WhenUserDoesNotExists(string email, string keyAdmin)
+    {
+        // Arrange
+        var mediatorSub = Substitute.For<IMediator>();
+        var loginUserCommand = new UserAdminCommand
+        {
+            Email = email,
+            KeyAdmin = keyAdmin
+        };
+
+        var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The user does not exists." };
+
+        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+
+        // Act
+        var response = await mediatorSub.Send(loginUserCommand);
+
+        // Assert
+        Assert.NotNull(response);
+        Assert.NotNull(response.ResponseMessage);
+        Assert.Equal(apiResponse.StatusCode, response.StatusCode);
+        Assert.Equal(apiResponse.ResponseMessage, response.ResponseMessage);
+        Assert.IsType<string>(apiResponse.ResponseMessage);
+        Assert.IsType<ApiResponse>(response);
+    }
+
+    [Theory]
+    [InlineData("usertoAdmin@example.com", "wrongkey-d97f-48ae-ad1e-86d81da4a745")]
+    public async Task MakeUserAdmin_ReturnsStatusCode400_WhenUserKeyIsInvalid(string email, string keyAdmin)
+    {
+        // Arrange
+        var mediatorSub = Substitute.For<IMediator>();
+        var loginUserCommand = new UserAdminCommand
+        {
+            Email = email,
+            KeyAdmin = keyAdmin
+        };
+
+        var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The key admin is invalid." };
+
+        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+
+        // Act
+        var response = await mediatorSub.Send(loginUserCommand);
+
+        // Assert
+        Assert.NotNull(response);
+        Assert.NotNull(response.ResponseMessage);
+        Assert.Equal(apiResponse.StatusCode, response.StatusCode);
+        Assert.Equal(apiResponse.ResponseMessage, response.ResponseMessage);
+        Assert.IsType<string>(apiResponse.ResponseMessage);
+        Assert.IsType<ApiResponse>(response);
+    }
+
+
+    [Theory]
+    [InlineData("usertoAdmin@example.com", "6dffa9ce-d97f-48ae-ad1e-86d81da4a745")]
+    public async Task MakeUserAdmin_ReturnsStatusCode200_WhenUserIsAssingAdmin(string email, string keyAdmin)
+    {
+        // Arrange
+        var mediatorSub = Substitute.For<IMediator>();
+        var loginUserCommand = new UserAdminCommand
+        {
+            Email = email,
+            KeyAdmin = keyAdmin
+        };
+
+        var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = "The admin role is added for the user" };
+
+        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+
+        // Act
+        var response = await mediatorSub.Send(loginUserCommand);
+
+        // Assert
+        Assert.NotNull(response);
+        Assert.NotNull(response.ResponseMessage);
+        Assert.Equal(apiResponse.StatusCode, response.StatusCode);
+        Assert.Equal(apiResponse.ResponseMessage, response.ResponseMessage);
+        Assert.IsType<string>(apiResponse.ResponseMessage);
+        Assert.IsType<ApiResponse>(response);
+    }
+
+    [Theory]
+    [InlineData("usertoAdmin@example.com", "6dffa9ce-d97f-48ae-ad1e-86d81da4a745")]
+    public async Task MakeUserAdmin_ReturnsStatusCode200_WhenUserIsAlreadyAdmin(string email, string keyAdmin)
+    {
+        // Arrange
+        var mediatorSub = Substitute.For<IMediator>();
+        var loginUserCommand = new UserAdminCommand
+        {
+            Email = email,
+            KeyAdmin = keyAdmin
+        };
+
+        var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = "The user is already admin." };
+
+        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+
+        // Act
+        var response = await mediatorSub.Send(loginUserCommand);
+
+        // Assert
+        Assert.NotNull(response);
+        Assert.NotNull(response.ResponseMessage);
+        Assert.Equal(apiResponse.StatusCode, response.StatusCode);
+        Assert.Equal(apiResponse.ResponseMessage, response.ResponseMessage);
+        Assert.IsType<string>(apiResponse.ResponseMessage);
+        Assert.IsType<ApiResponse>(response);
+    }
+
+
+    [Theory]
+    [InlineData("usertoRemoveAdmin@example.com", "6dffa9ce-d97f-48ae-ad1e-86d81da4a745")]
+    public async Task RemoveUserAdmin_ReturnsStatusCode400_WhenUserDoesNotExists(string email, string keyAdmin)
+    {
+        // Arrange
+        var mediatorSub = Substitute.For<IMediator>();
+        var loginUserCommand = new RemoveUserAdminCommand
+        {
+            Email = email,
+            KeyAdmin = keyAdmin
+        };
+
+        var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The user does not exists." };
+
+        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+
+        // Act
+        var response = await mediatorSub.Send(loginUserCommand);
+
+        // Assert
+        Assert.NotNull(response);
+        Assert.NotNull(response.ResponseMessage);
+        Assert.Equal(apiResponse.StatusCode, response.StatusCode);
+        Assert.Equal(apiResponse.ResponseMessage, response.ResponseMessage);
+        Assert.IsType<string>(apiResponse.ResponseMessage);
+        Assert.IsType<ApiResponse>(response);
+    }
+
+
+    [Theory]
+    [InlineData("usertoRemoveAdmin", "wrongkey-d97f-48ae-ad1e-86d81da4a745")]
+    public async Task RemoveUserAdmin_ReturnsStatusCode400_WhenUserKeyIsInvalid(string email, string keyAdmin)
+    {
+        // Arrange
+        var mediatorSub = Substitute.For<IMediator>();
+        var loginUserCommand = new RemoveUserAdminCommand
+        {
+            Email = email,
+            KeyAdmin = keyAdmin
+        };
+
+        var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The key admin is invalid." };
+
+        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+
+        // Act
+        var response = await mediatorSub.Send(loginUserCommand);
+
+        // Assert
+        Assert.NotNull(response);
+        Assert.NotNull(response.ResponseMessage);
+        Assert.Equal(apiResponse.StatusCode, response.StatusCode);
+        Assert.Equal(apiResponse.ResponseMessage, response.ResponseMessage);
+        Assert.IsType<string>(apiResponse.ResponseMessage);
+        Assert.IsType<ApiResponse>(response);
+    }
+
+    [Theory]
+    [InlineData("usertoRemoveAdmin", "6dffa9ce-d97f-48ae-ad1e-86d81da4a745")]
+    public async Task RemoveUserAdmin_ReturnsStatusCode200_WhenUserIsRemovedFromAdminRole(string email, string keyAdmin)
+    {
+        // Arrange
+        var mediatorSub = Substitute.For<IMediator>();
+        var loginUserCommand = new RemoveUserAdminCommand
+        {
+            Email = email,
+            KeyAdmin = keyAdmin
+        };
+
+        var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = "The admin role is deleted for the user" };
+
+        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+
+        // Act
+        var response = await mediatorSub.Send(loginUserCommand);
+
+        // Assert
+        Assert.NotNull(response);
+        Assert.NotNull(response.ResponseMessage);
+        Assert.Equal(apiResponse.StatusCode, response.StatusCode);
+        Assert.Equal(apiResponse.ResponseMessage, response.ResponseMessage);
+        Assert.IsType<string>(apiResponse.ResponseMessage);
+        Assert.IsType<ApiResponse>(response);
     }
 }
