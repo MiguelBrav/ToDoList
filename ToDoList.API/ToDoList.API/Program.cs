@@ -14,6 +14,7 @@ using ToDoList.API.Commands.AdminCommands;
 using ToDoList.API.Commands.ReportCommands;
 using ToDoList.API.Commands.TaskByUserBinCommands;
 using ToDoList.API.Commands.TaskByUserCommands;
+using ToDoList.Domain.Helper;
 using ToDoList.Domain.Interfaces;
 using ToDoList.Infraestructure;
 using ToDoList.Infraestructure.Repositories;
@@ -163,6 +164,7 @@ builder.Services.AddTransient<IUserLanguageSelectionService, LanguageUserSelecti
 builder.Services.AddTransient<IInstructionsTranslatedService, InstructionsTranslatedService>();
 builder.Services.AddTransient<ITaskUserService, TaskUserService>();
 builder.Services.AddTransient<ITaskUserHistoricalService, TaskUserHistoricalService>();
+builder.Services.AddTransient<ITokenService, TokenService>();
 
 var app = builder.Build();
 

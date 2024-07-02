@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ToDoList.API.Commands;
@@ -43,6 +45,38 @@ namespace ToDoList.API.Controllers
                 return StatusCode(responseUser.StatusCode, responseUser.Response);
 
             return StatusCode(responseUser.StatusCode, JsonConvert.DeserializeObject<ResponseAuth>(responseUser.ResponseMessage));
+        }
+
+
+        /// <summary>
+        /// This method is for refresh user token.
+        /// </summary>
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("refresh")]
+        public async Task<IActionResult> RefreshUserTokenApp()
+        {
+            var userClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
+
+            if (userClaim != null)
+            {
+                var email = userClaim.Value;
+
+                RefreshTokenCommand taskCommand = new RefreshTokenCommand()
+                {
+                    Email = email
+                };
+
+                ApiResponse responseRefresh = await _mediator.Send(taskCommand);
+
+                if (responseRefresh.Response == null || responseRefresh.Response is false)
+                    return StatusCode(responseRefresh.StatusCode, responseRefresh.Response);
+
+                return StatusCode(responseRefresh.StatusCode, JsonConvert.DeserializeObject<ResponseAuth>(responseRefresh.ResponseMessage));
+
+            }
+
+            return StatusCode(StatusCodes.Status400BadRequest, "Error with token");
         }
 
         /// <summary>
