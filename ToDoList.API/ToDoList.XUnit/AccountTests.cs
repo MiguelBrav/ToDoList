@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using System.Text.Json;
@@ -12,7 +13,7 @@ namespace ToDoList.XUnit;
 public class AccountTests
 {
     [Theory]
-    [InlineData("test@example.com")]  
+    [InlineData("test@example.com")]
     public async Task CreateUser_ReturnsStatusCode400_WhenUserAlreadyExists(string email)
     {
         // Arrange
@@ -22,7 +23,7 @@ public class AccountTests
             Email = email,
             Name = "Test User",
             Password = "P@ssw0rd",
-            Gender = 1, 
+            Gender = 1,
             BirthDate = new DateTime(1997, 1, 1)
         };
 
@@ -106,7 +107,7 @@ public class AccountTests
     }
 
     [Theory]
-    [InlineData("userfails@example.com","passw12345")]
+    [InlineData("userfails@example.com", "passw12345")]
     public async Task LoginUser_ReturnsStatusCode400_WhenUserCantLogin(string email, string password)
     {
         // Arrange
@@ -360,5 +361,61 @@ public class AccountTests
         Assert.Equal(apiResponse.ResponseMessage, response.ResponseMessage);
         Assert.IsType<string>(apiResponse.ResponseMessage);
         Assert.IsType<ApiResponse>(response);
+    }
+
+    [Theory]
+    [InlineData("email@hotmail.com")]
+    public async Task RefreshToken_ReturnsStatusCode400_WhenUserDoesNotExists(string email)
+    {
+        // Arrange
+        var mediatorSub = Substitute.For<IMediator>();
+        var refreshCommand = new RefreshTokenCommand
+        {
+            Email = email
+        };
+
+        var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The user does not exists." };
+
+        mediatorSub.Send(refreshCommand, default).Returns(Task.FromResult(apiResponse));
+
+        // Act
+        var response = await mediatorSub.Send(refreshCommand);
+
+        // Assert
+        Assert.NotNull(response);
+        Assert.NotNull(response.ResponseMessage);
+        Assert.Equal(apiResponse.StatusCode, response.StatusCode);
+        Assert.Equal(apiResponse.ResponseMessage, response.ResponseMessage);
+        Assert.IsType<string>(apiResponse.ResponseMessage);
+        Assert.IsType<ApiResponse>(response);
+    }
+
+    [Theory]
+    [InlineData("emailValid@hotmail.com")]
+    public async Task RefreshToken_ReturnsStatusCode200_WhenEmailIsValid(string email)
+    {
+        // Arrange
+        var mediatorSub = Substitute.For<IMediator>();
+        var refreshCommand = new RefreshTokenCommand
+        {
+            Email = email
+        };
+
+        var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = JsonSerializer.Serialize(new ResponseAuth()) };
+
+        mediatorSub.Send(refreshCommand, default).Returns(Task.FromResult(apiResponse));
+
+        // Act
+        var response = await mediatorSub.Send(refreshCommand);
+
+        // Assert
+        Assert.NotNull(response);
+        Assert.NotNull(response.ResponseMessage);
+        Assert.Equal(apiResponse.StatusCode, response.StatusCode);
+        Assert.Equal(apiResponse.ResponseMessage, response.ResponseMessage);
+        Assert.IsType<string>(apiResponse.ResponseMessage);
+        Assert.IsType<ApiResponse>(response);
+        Assert.IsType<ResponseAuth>(JsonSerializer.Deserialize<ResponseAuth>(response.ResponseMessage));
+
     }
 }
