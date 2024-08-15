@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using ToDoList.DTO.ApiResponse;
 
-namespace ToDoList.API.Commands.TaskByUserBinCommands
+namespace ToDoList.API.Queries.TaskByUserBinQueries
 {
     public class GetUserTasksBinCommand : IRequest<ApiResponse>
     {

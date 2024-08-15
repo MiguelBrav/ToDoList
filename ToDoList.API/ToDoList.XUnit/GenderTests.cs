@@ -1,11 +1,7 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Newtonsoft.Json;
 using NSubstitute;
-using System.Text.Json;
-using ToDoList.API.Commands;
-using ToDoList.API.Commands.AdminCommands;
+using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 using Xunit;
@@ -22,17 +18,17 @@ public class GenderTests
     {
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
-        var gendersCommand = new GendersCommand
+        var gendersQuery = new GendersQuery
         {
            LanguageId = languageId
         };
 
         var apiResponse = new ApiResponse { StatusCode = 404, ResponseMessage = "Error while retrieving the information." };
 
-        mediatorSub.Send(gendersCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(gendersQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(gendersCommand);
+        var response = await mediatorSub.Send(gendersQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -50,17 +46,17 @@ public class GenderTests
     {
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
-        var gendersCommand = new GendersCommand
+        var gendersQuery = new GendersQuery
         {
             LanguageId = languageId
         };
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = JsonConvert.SerializeObject(new List<GendersTranslated> ()) };
 
-        mediatorSub.Send(gendersCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(gendersQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(gendersCommand);
+        var response = await mediatorSub.Send(gendersQuery);
         var deserializedGenders = JsonConvert.DeserializeObject<List<GendersTranslated>>(response.ResponseMessage);
 
         // Assert

@@ -1,10 +1,7 @@
 ﻿using MediatR;
-using Newtonsoft.Json;
 using NSubstitute;
-using ToDoList.API.Commands;
-using ToDoList.API.Commands.ReportCommands;
+using ToDoList.API.Queries.ReportQueries;
 using ToDoList.DTO.ApiResponse;
-using ToDoList.DTO.Translated;
 using Xunit;
 
 namespace ToDoList.XUnit;
@@ -20,7 +17,7 @@ public class ReportTests
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
-        var reportCommand = new GetUserTasksExcelCommand
+        var reportQuery = new GetUserTasksBinExcelQuery
         {
             LanguageId = languageId,
             UserId = userId
@@ -28,10 +25,10 @@ public class ReportTests
 
         var apiResponse = new ApiResponse { StatusCode = 404, ResponseMessage = "The user does not exists." };
 
-        mediatorSub.Send(reportCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(reportQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(reportCommand);
+        var response = await mediatorSub.Send(reportQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -50,7 +47,7 @@ public class ReportTests
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
-        var reportCommand = new GetUserTasksExcelCommand
+        var reportQuery = new GetUserTasksBinExcelQuery
         {
             LanguageId = languageId,
             UserId = userId
@@ -58,10 +55,10 @@ public class ReportTests
 
         var apiResponse = new ApiResponse { StatusCode = 204, ResponseMessage = "The user has no tasks created." };
 
-        mediatorSub.Send(reportCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(reportQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(reportCommand);
+        var response = await mediatorSub.Send(reportQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -80,7 +77,7 @@ public class ReportTests
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
-        var reportCommand = new GetUserTasksExcelCommand
+        var reportQuery = new GetUserTasksBinExcelQuery
         {
             LanguageId = languageId,
             UserId = userId
@@ -88,10 +85,10 @@ public class ReportTests
 
         var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "Error with report" };
 
-        mediatorSub.Send(reportCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(reportQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(reportCommand);
+        var response = await mediatorSub.Send(reportQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -113,7 +110,7 @@ public class ReportTests
         string userId = Guid.NewGuid().ToString(); // UserId mock
         var memoryStream = new MemoryStream(new byte[] { 1, 2, 3 });
         var reportBase64String = Convert.ToBase64String(new byte[] { 1, 2, 3 });
-        var reportCommand = new GetUserTasksExcelCommand
+        var reportQuery = new GetUserTasksBinExcelQuery
         {
             LanguageId = languageId,
             UserId = userId
@@ -121,10 +118,10 @@ public class ReportTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = reportBase64String };
 
-        mediatorSub.Send(reportCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(reportQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(reportCommand);
+        var response = await mediatorSub.Send(reportQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -143,7 +140,7 @@ public class ReportTests
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
-        var reportCommand = new GetUserTasksBinExcelCommand
+        var reportQuery = new GetUserTasksBinExcelQuery
         {
             LanguageId = languageId,
             UserId = userId
@@ -151,10 +148,10 @@ public class ReportTests
 
         var apiResponse = new ApiResponse { StatusCode = 404, ResponseMessage = "The user does not exists." };
 
-        mediatorSub.Send(reportCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(reportQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(reportCommand);
+        var response = await mediatorSub.Send(reportQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -173,7 +170,7 @@ public class ReportTests
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
-        var reportCommand = new GetUserTasksBinExcelCommand
+        var reportQuery = new GetUserTasksBinExcelQuery
         {
             LanguageId = languageId,
             UserId = userId
@@ -181,10 +178,10 @@ public class ReportTests
 
         var apiResponse = new ApiResponse { StatusCode = 204, ResponseMessage = "The user has no tasks created." };
 
-        mediatorSub.Send(reportCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(reportQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(reportCommand);
+        var response = await mediatorSub.Send(reportQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -203,7 +200,7 @@ public class ReportTests
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
-        var reportCommand = new GetUserTasksBinExcelCommand
+        var reportQuery = new GetUserTasksBinExcelQuery
         {
             LanguageId = languageId,
             UserId = userId
@@ -211,10 +208,10 @@ public class ReportTests
 
         var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "Error with report" };
 
-        mediatorSub.Send(reportCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(reportQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(reportCommand);
+        var response = await mediatorSub.Send(reportQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -236,7 +233,7 @@ public class ReportTests
         string userId = Guid.NewGuid().ToString(); // UserId mock
         var memoryStream = new MemoryStream(new byte[] { 1, 2, 3 });
         var reportBase64String = Convert.ToBase64String(new byte[] { 1, 2, 3 });
-        var reportCommand = new GetUserTasksBinExcelCommand
+        var reportQuery = new GetUserTasksBinExcelQuery
         {
             LanguageId = languageId,
             UserId = userId
@@ -244,10 +241,10 @@ public class ReportTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = reportBase64String };
 
-        mediatorSub.Send(reportCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(reportQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(reportCommand);
+        var response = await mediatorSub.Send(reportQuery);
 
         // Assert
         Assert.NotNull(response);

@@ -6,14 +6,13 @@ using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using ToDoList.API.Commands.ReportCommands;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
 
-namespace ToDoList.API.Commands.ReportCommands
+namespace ToDoList.API.Queries.ReportQueries
 {
-    public class GetUserTasksExcelCommandHandler : IRequestHandler<GetUserTasksExcelCommand, ApiResponse>
+    public class GetUserTasksExcelQueryHandler : IRequestHandler<GetUserTasksExcelQuery, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -27,7 +26,7 @@ namespace ToDoList.API.Commands.ReportCommands
         private readonly IConfiguration _configuration;
 
         private readonly string _defaultLanguage;
-        public GetUserTasksExcelCommandHandler(UserManager<IdentityUser> userManager, IUsersAppService usersAppService, ITaskUserService taskUserService, ITaskTierTranslatedService taskTierTranslatedService, IConfiguration configuration)
+        public GetUserTasksExcelQueryHandler(UserManager<IdentityUser> userManager, IUsersAppService usersAppService, ITaskUserService taskUserService, ITaskTierTranslatedService taskTierTranslatedService, IConfiguration configuration)
         {
             _userManager = userManager;
             _usersAppService = usersAppService;
@@ -37,7 +36,7 @@ namespace ToDoList.API.Commands.ReportCommands
             _defaultLanguage = _configuration.GetValue<string>("DefaultLanguage");
         }
 
-        public async Task<ApiResponse> Handle(GetUserTasksExcelCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse> Handle(GetUserTasksExcelQuery request, CancellationToken cancellationToken)
         {
             ApiResponse response = new ApiResponse();
 
@@ -63,7 +62,7 @@ namespace ToDoList.API.Commands.ReportCommands
                 return response;
             }
 
-            List<TaskByUser> tasksByUser = await  _taskUserService.GeAllTasksByUserId(request.UserId);
+            List<TaskByUser> tasksByUser = await _taskUserService.GeAllTasksByUserId(request.UserId);
 
             if (tasksByUser == null || tasksByUser.Count == 0)
             {

@@ -10,24 +10,24 @@ using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
 
-namespace ToDoList.API.Commands
+namespace ToDoList.API.Queries
 {
-    public class TaskTierCommandHandler : IRequestHandler<TaskTierCommand, ApiResponse>
+    public class TaskTierQueryHandler : IRequestHandler<TaskTierQuery, ApiResponse>
     {
         private readonly ITaskTierTranslatedService _taskTierTranslatedService;
 
-        public TaskTierCommandHandler(ITaskTierTranslatedService taskTierTranslatedService)
+        public TaskTierQueryHandler(ITaskTierTranslatedService taskTierTranslatedService)
         {
             _taskTierTranslatedService = taskTierTranslatedService;
         }
 
-        public async Task<ApiResponse> Handle(TaskTierCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse> Handle(TaskTierQuery request, CancellationToken cancellationToken)
         {
             ApiResponse response = new ApiResponse();
 
             List<TaskTierTranslated> taskTierTranslateds = await _taskTierTranslatedService.GetTasksTranslated(request.LanguageId);
 
-            if(taskTierTranslateds == null || taskTierTranslateds.Count == 0)
+            if (taskTierTranslateds == null || taskTierTranslateds.Count == 0)
             {
                 response.Response = false;
                 response.ResponseMessage = "Error while retrieving the information.";

@@ -9,9 +9,9 @@ using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
 
-namespace ToDoList.API.Commands
+namespace ToDoList.API.Queries
 {
-    public class GetUserAppInfoCommandHandler : IRequestHandler<GetUserAppInfoCommand, ApiResponse>
+    public class GetUserAppInfoQueryHandler : IRequestHandler<GetUserAppInfoQuery, ApiResponse>
     {
 
         private readonly IUsersAppService _usersAppService;
@@ -20,14 +20,14 @@ namespace ToDoList.API.Commands
 
         private readonly IUsersProfileService _usersProfileService;
 
-        public GetUserAppInfoCommandHandler(IUsersAppService usersAppService, UserManager<IdentityUser> userManager, IUsersProfileService usersProfileService)
+        public GetUserAppInfoQueryHandler(IUsersAppService usersAppService, UserManager<IdentityUser> userManager, IUsersProfileService usersProfileService)
         {
             _usersAppService = usersAppService;
             _userManager = userManager;
             _usersProfileService = usersProfileService;
         }
 
-        public async Task<ApiResponse> Handle(GetUserAppInfoCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse> Handle(GetUserAppInfoQuery request, CancellationToken cancellationToken)
         {
             ApiResponse response = new ApiResponse();
 

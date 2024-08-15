@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using ToDoList.DTO.ApiResponse;
 
-namespace ToDoList.API.Commands
+namespace ToDoList.API.Queries
 {
-    public class GendersCommand : IRequest<ApiResponse>
+    public class InstructionQuery : IRequest<ApiResponse>
     {
 		public string LanguageId { get; set; }
 	}

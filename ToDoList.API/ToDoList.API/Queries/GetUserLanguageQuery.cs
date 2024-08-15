@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using ToDoList.DTO.ApiResponse;
 
-namespace ToDoList.API.Commands
+namespace ToDoList.API.Queries
 {
-    public class GetUserLanguageCommand : IRequest<ApiResponse>
+    public class GetUserLanguageQuery : IRequest<ApiResponse>
     {
         public string UserId { get; set; }
-	}
+    }
 }

@@ -9,9 +9,9 @@ using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
 
-namespace ToDoList.API.Commands
+namespace ToDoList.API.Queries
 {
-    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, ApiResponse>
+    public class RefreshTokenQueryHandler : IRequestHandler<RefreshTokenQuery, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -20,7 +20,7 @@ namespace ToDoList.API.Commands
         private readonly ITokenService _tokenService;
         private readonly string _keyJwt;
 
-        public RefreshTokenCommandHandler(SignInManager<IdentityUser> signManager, UserManager<IdentityUser> userManager, IConfiguration configuration, ITokenService tokenService)
+        public RefreshTokenQueryHandler(SignInManager<IdentityUser> signManager, UserManager<IdentityUser> userManager, IConfiguration configuration, ITokenService tokenService)
         {
             _userManager = userManager;
             _signManager = signManager;
@@ -29,7 +29,7 @@ namespace ToDoList.API.Commands
             _keyJwt = _configuration["key_jwt"] ?? "";
         }
 
-        public async Task<ApiResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse> Handle(RefreshTokenQuery request, CancellationToken cancellationToken)
         {
             ApiResponse response = new ApiResponse();
 
@@ -46,7 +46,7 @@ namespace ToDoList.API.Commands
 
             IList<Claim> claimsDB = await _userManager.GetClaimsAsync(user);
 
-            ResponseAuth refreshToken = await _tokenService.GenerateToken(user,request.Email,claimsDB,_keyJwt);
+            ResponseAuth refreshToken = await _tokenService.GenerateToken(user, request.Email, claimsDB, _keyJwt);
 
             response.Response = true;
             response.ResponseMessage = JsonConvert.SerializeObject(refreshToken);

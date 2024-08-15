@@ -10,24 +10,24 @@ using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
 
-namespace ToDoList.API.Commands
+namespace ToDoList.API.Queries
 {
-    public class GendersCommandHandler : IRequestHandler<GendersCommand, ApiResponse>
+    public class InstructionQueryHandler : IRequestHandler<InstructionQuery, ApiResponse>
     {
-        private readonly IGendersTranslatedService _gendersTranslatedService;
+        private readonly IInstructionsTranslatedService _instructionsTranslatedService;
 
-        public GendersCommandHandler(IGendersTranslatedService gendersTranslatedService)
+        public InstructionQueryHandler(IInstructionsTranslatedService instructionsTranslatedService)
         {
-            _gendersTranslatedService = gendersTranslatedService;
+            _instructionsTranslatedService = instructionsTranslatedService;
         }
 
-        public async Task<ApiResponse> Handle(GendersCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse> Handle(InstructionQuery request, CancellationToken cancellationToken)
         {
             ApiResponse response = new ApiResponse();
 
-            List<GendersTranslated> gendersTranslateds = await _gendersTranslatedService.GetGendersTranslateds(request.LanguageId);
+            List<InstructionsTranslated> instructionsTranslateds = await _instructionsTranslatedService.GetInstructionsTranslateds(request.LanguageId);
 
-            if(gendersTranslateds == null || gendersTranslateds.Count == 0)
+            if(instructionsTranslateds == null || instructionsTranslateds.Count == 0)
             {
                 response.Response = false;
                 response.ResponseMessage = "Error while retrieving the information.";
@@ -37,7 +37,7 @@ namespace ToDoList.API.Commands
             }
 
             response.Response = true;
-            response.ResponseMessage = JsonConvert.SerializeObject(gendersTranslateds);
+            response.ResponseMessage = JsonConvert.SerializeObject(instructionsTranslateds);
             response.StatusCode = StatusCodes.Status200OK;
 
             return response;

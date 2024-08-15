@@ -5,6 +5,7 @@ using NSubstitute;
 using System.Text.Json;
 using ToDoList.API.Commands;
 using ToDoList.API.Commands.AdminCommands;
+using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 using Xunit;
 
@@ -369,17 +370,17 @@ public class AccountTests
     {
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
-        var refreshCommand = new RefreshTokenCommand
+        var refreshQuery = new RefreshTokenQuery
         {
             Email = email
         };
 
         var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The user does not exists." };
 
-        mediatorSub.Send(refreshCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(refreshQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(refreshCommand);
+        var response = await mediatorSub.Send(refreshQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -396,17 +397,17 @@ public class AccountTests
     {
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
-        var refreshCommand = new RefreshTokenCommand
+        var refreshQuery = new RefreshTokenQuery
         {
             Email = email
         };
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = JsonSerializer.Serialize(new ResponseAuth()) };
 
-        mediatorSub.Send(refreshCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(refreshQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(refreshCommand);
+        var response = await mediatorSub.Send(refreshQuery);
 
         // Assert
         Assert.NotNull(response);
