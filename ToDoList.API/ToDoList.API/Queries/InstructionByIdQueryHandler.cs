@@ -10,24 +10,24 @@ using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
 
-namespace ToDoList.API.Commands
+namespace ToDoList.API.Queries
 {
-    public class TaskTierByIdCommandHandler : IRequestHandler<TaskTierByIdCommand, ApiResponse>
+    public class InstructionByIdQueryHandler : IRequestHandler<InstructionByIdQuery, ApiResponse>
     {
-        private readonly ITaskTierTranslatedService _taskTierTranslatedService;
+        private readonly IInstructionsTranslatedService _instructionsTranslatedService;
 
-        public TaskTierByIdCommandHandler(ITaskTierTranslatedService taskTierTranslatedService)
+        public InstructionByIdQueryHandler(IInstructionsTranslatedService instructionsTranslatedService)
         {
-            _taskTierTranslatedService = taskTierTranslatedService;
+            _instructionsTranslatedService = instructionsTranslatedService;
         }
 
-        public async Task<ApiResponse> Handle(TaskTierByIdCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse> Handle(InstructionByIdQuery request, CancellationToken cancellationToken)
         {
             ApiResponse response = new ApiResponse();
 
-            TaskTierTranslated taskTierTranslated = await _taskTierTranslatedService.GetTaskTranslatedById(request.TaskTierId,request.LanguageId);
+            InstructionsTranslated instructionsTranslated = await _instructionsTranslatedService.GetInstructionTranslatedById(request.InstructionId, request.LanguageId);
 
-            if (taskTierTranslated == null)
+            if (instructionsTranslated == null)
             {
                 response.Response = false;
                 response.ResponseMessage = "Error while retrieving the information.";
@@ -37,7 +37,7 @@ namespace ToDoList.API.Commands
             }
 
             response.Response = true;
-            response.ResponseMessage = JsonConvert.SerializeObject(taskTierTranslated);
+            response.ResponseMessage = JsonConvert.SerializeObject(instructionsTranslated);
             response.StatusCode = StatusCodes.Status200OK;
 
             return response;

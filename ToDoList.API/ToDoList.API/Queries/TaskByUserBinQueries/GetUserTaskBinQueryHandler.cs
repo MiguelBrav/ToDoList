@@ -9,25 +9,33 @@ using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
 
-namespace ToDoList.API.Commands
+namespace ToDoList.API.Queries.TaskByUserBinQueries
 {
-    public class GetUserLanguageCommandHandler : IRequestHandler<GetUserLanguageCommand, ApiResponse>
+    public class GetUserTaskBinQueryHandler : IRequestHandler<GetUserTasksBinCommand, ApiResponse>
     {
-
-        private readonly IUsersAppService _usersAppService;
 
         private readonly UserManager<IdentityUser> _userManager;
 
-        private readonly IUserLanguageSelectionService _userLanguageService;
+        private readonly IUsersAppService _usersAppService;
 
-        public GetUserLanguageCommandHandler(IUsersAppService usersAppService, UserManager<IdentityUser> userManager, IUserLanguageSelectionService userLanguageService)
+        private readonly ITaskUserService _taskUserService;
+
+        private readonly ITaskTierTranslatedService _taskTierTranslatedService;
+
+        private readonly IConfiguration _configuration;
+
+        private readonly string _defaultLanguage;
+        public GetUserTaskBinQueryHandler(UserManager<IdentityUser> userManager, IUsersAppService usersAppService, ITaskUserService taskUserService, ITaskTierTranslatedService taskTierTranslatedService, IConfiguration configuration)
         {
-            _usersAppService = usersAppService;
             _userManager = userManager;
-            _userLanguageService = userLanguageService;
+            _usersAppService = usersAppService;
+            _taskUserService = taskUserService;
+            _taskTierTranslatedService = taskTierTranslatedService;
+            _configuration = configuration;
+            _defaultLanguage = _configuration.GetValue<string>("DefaultLanguage");
         }
 
-        public async Task<ApiResponse> Handle(GetUserLanguageCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse> Handle(GetUserTasksBinCommand request, CancellationToken cancellationToken)
         {
             ApiResponse response = new ApiResponse();
 
@@ -53,19 +61,19 @@ namespace ToDoList.API.Commands
                 return response;
             }
 
-            LanguageUserSelection userLanguage = await _userLanguageService.GetLanguageUserSelection(userExists.Id);
+            List<TaskByUser> tasksByUser = await _taskUserService.GetTasksByUserBin(request.UserId, request.PageId, request.SizeId, request.TaskTierId, request.OrderById);
 
-            if (userLanguage == null)
+            if (tasksByUser == null || tasksByUser.Count == 0)
             {
                 response.Response = false;
-                response.ResponseMessage = "The user does not have language selection.";
+                response.ResponseMessage = "The user has no tasks deleted.";
                 response.StatusCode = StatusCodes.Status204NoContent;
 
                 return response;
             }
 
             response.Response = true;
-            response.ResponseMessage = JsonConvert.SerializeObject(userLanguage);
+            response.ResponseMessage = JsonConvert.SerializeObject(tasksByUser);
             response.StatusCode = StatusCodes.Status200OK;
 
             return response;

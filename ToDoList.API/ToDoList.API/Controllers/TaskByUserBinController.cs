@@ -7,6 +7,7 @@ using System;
 using ToDoList.API.Commands;
 using ToDoList.API.Commands.TaskByUserBinCommands;
 using ToDoList.API.Commands.TaskByUserCommands;
+using ToDoList.API.Queries.TaskByUserBinQueries;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.DTO;
 using ToDoList.DTO.Translated;

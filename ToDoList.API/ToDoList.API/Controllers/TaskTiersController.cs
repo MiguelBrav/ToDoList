@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using ToDoList.API.Commands;
+using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 
@@ -29,7 +29,7 @@ namespace ToDoList.API.Controllers
             if(languageId == null)
                 return StatusCode(StatusCodes.Status400BadRequest);
 
-            TaskTierCommand command = new TaskTierCommand { LanguageId = languageId };
+            TaskTierQuery command = new TaskTierQuery { LanguageId = languageId };
 
             ApiResponse responseTaskTiers = await _mediator.Send(command);
 
@@ -50,7 +50,7 @@ namespace ToDoList.API.Controllers
             if (languageId == null)
                 return StatusCode(StatusCodes.Status400BadRequest);
 
-            TaskTierByIdCommand command = new TaskTierByIdCommand { TaskTierId = tasktierId, LanguageId = languageId };
+            TaskTierByIdQuery command = new TaskTierByIdQuery { TaskTierId = tasktierId, LanguageId = languageId };
 
             ApiResponse responseInstruction = await _mediator.Send(command);
 

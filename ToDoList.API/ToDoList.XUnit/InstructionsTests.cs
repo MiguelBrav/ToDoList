@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using NSubstitute;
 using ToDoList.API.Commands;
+using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 using Xunit;
@@ -18,17 +19,17 @@ public class InstructionsTests
     {
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
-        var instructionsCommand = new InstructionCommand
+        var instructionQuery = new InstructionQuery
         {
            LanguageId = languageId
         };
 
         var apiResponse = new ApiResponse { StatusCode = 404, ResponseMessage = "Error while retrieving the information." };
 
-        mediatorSub.Send(instructionsCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(instructionQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(instructionsCommand);
+        var response = await mediatorSub.Send(instructionQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -46,17 +47,17 @@ public class InstructionsTests
     {
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
-        var instructionsCommand = new InstructionCommand
+        var instructionQuery = new InstructionQuery
         {
             LanguageId = languageId
         };
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = JsonConvert.SerializeObject(new List<InstructionsTranslated> ()) };
 
-        mediatorSub.Send(instructionsCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(instructionQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(instructionsCommand);
+        var response = await mediatorSub.Send(instructionQuery);
         var deserializedGenders = JsonConvert.DeserializeObject<List<InstructionsTranslated>>(response.ResponseMessage);
 
         // Assert
@@ -78,7 +79,7 @@ public class InstructionsTests
     {
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
-        var instructionsCommand = new InstructionByIdCommand
+        var instructionByIdQuery = new InstructionByIdQuery
         {
             LanguageId = languageId,
             InstructionId = instructionId
@@ -86,10 +87,10 @@ public class InstructionsTests
 
         var apiResponse = new ApiResponse { StatusCode = 404, ResponseMessage = "Error while retrieving the information." };
 
-        mediatorSub.Send(instructionsCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(instructionByIdQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(instructionsCommand);
+        var response = await mediatorSub.Send(instructionByIdQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -107,7 +108,7 @@ public class InstructionsTests
     {
         // Arrange
         var mediatorSub = Substitute.For<IMediator>();
-        var instructionsCommand = new InstructionByIdCommand
+        var instructionByIdQuery = new InstructionByIdQuery
         {
             LanguageId = languageId,
             InstructionId = instructionId
@@ -115,10 +116,10 @@ public class InstructionsTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = JsonConvert.SerializeObject(new InstructionsTranslated()) };
 
-        mediatorSub.Send(instructionsCommand, default).Returns(Task.FromResult(apiResponse));
+        mediatorSub.Send(instructionByIdQuery, default).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(instructionsCommand);
+        var response = await mediatorSub.Send(instructionByIdQuery);
         var deserializedGenders = JsonConvert.DeserializeObject<InstructionsTranslated>(response.ResponseMessage);
 
         // Assert

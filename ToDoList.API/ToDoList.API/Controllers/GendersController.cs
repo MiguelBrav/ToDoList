@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using ToDoList.API.Commands;
+using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 
@@ -29,7 +29,7 @@ namespace ToDoList.API.Controllers
             if(languageId == null)
                 return StatusCode(StatusCodes.Status400BadRequest);
 
-            GendersCommand command = new GendersCommand { LanguageId = languageId };
+            GendersQuery command = new GendersQuery { LanguageId = languageId };
 
             ApiResponse responseTaskTiers = await _mediator.Send(command);
 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ToDoList.API.Commands;
 using ToDoList.API.Commands.AdminCommands;
+using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 
 namespace ToDoList.API.Controllers
@@ -62,7 +63,7 @@ namespace ToDoList.API.Controllers
             {
                 var email = userClaim.Value;
 
-                RefreshTokenCommand taskCommand = new RefreshTokenCommand()
+                RefreshTokenQuery taskCommand = new RefreshTokenQuery()
                 {
                     Email = email
                 };

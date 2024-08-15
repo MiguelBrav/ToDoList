@@ -2,15 +2,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System;
-using ToDoList.API.Commands;
-using ToDoList.API.Commands.ReportCommands;
-using ToDoList.API.Commands.TaskByUserCommands;
+using ToDoList.API.Queries.ReportQueries;
 using ToDoList.DTO.ApiResponse;
-using ToDoList.DTO.DTO;
-using ToDoList.DTO.Translated;
-using ToDoList.DTO.UsersApp;
 
 namespace ToDoList.API.Controllers
 {
@@ -41,7 +34,7 @@ namespace ToDoList.API.Controllers
 
                 var userId = userClaim.Value;
 
-                GetUserTasksExcelCommand taskCommand = new GetUserTasksExcelCommand()
+                GetUserTasksExcelQuery taskCommand = new GetUserTasksExcelQuery()
                 {
                     UserId = userId,
                     LanguageId = languageId
@@ -63,11 +56,11 @@ namespace ToDoList.API.Controllers
         }
 
         /// <summary>
-        /// This method is to get tasks by User in excel report
+        /// This method is to get tasks in bin by User in excel report
         /// </summary>
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [Route("tasks/bin/excel/{languageId}")]
+        [Route("tasks/excel/trash/{languageId}")]
         public async Task<IActionResult> GetTaskTiersBinExcel(string languageId)
         {
 
@@ -80,7 +73,7 @@ namespace ToDoList.API.Controllers
 
                 var userId = userClaim.Value;
 
-                GetUserTasksBinExcelCommand taskCommand = new GetUserTasksBinExcelCommand()
+                GetUserTasksBinExcelQuery taskCommand = new GetUserTasksBinExcelQuery()
                 {
                     UserId = userId,
                     LanguageId = languageId

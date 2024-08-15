@@ -11,9 +11,12 @@ using System.Reflection;
 using System.Text;
 using ToDoList.API.Commands;
 using ToDoList.API.Commands.AdminCommands;
-using ToDoList.API.Commands.ReportCommands;
 using ToDoList.API.Commands.TaskByUserBinCommands;
 using ToDoList.API.Commands.TaskByUserCommands;
+using ToDoList.API.Queries;
+using ToDoList.API.Queries.ReportQueries;
+using ToDoList.API.Queries.TaskByUserBinQueries;
+using ToDoList.API.Queries.TaskByUserQueries;
 using ToDoList.Domain.Helper;
 using ToDoList.Domain.Interfaces;
 using ToDoList.Infraestructure;
@@ -23,6 +26,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
 builder.Services.AddControllers();
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
@@ -97,9 +110,9 @@ container.RegisterAssemblyTypes(typeof(LoginUserCommandHandler).GetTypeInfo().As
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(ValidateTokenCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(TaskTierCommandHandler).GetTypeInfo().Assembly)
+container.RegisterAssemblyTypes(typeof(TaskTierQueryHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(GendersCommandHandler).GetTypeInfo().Assembly)
+container.RegisterAssemblyTypes(typeof(GendersQueryHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(UserProfileCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
@@ -107,29 +120,29 @@ container.RegisterAssemblyTypes(typeof(UpdateUserProfileCommandHandler).GetTypeI
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(DeleteUserProfileCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(GetUserAppInfoCommandHandler).GetTypeInfo().Assembly)
+container.RegisterAssemblyTypes(typeof(GetUserAppInfoQueryHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(UpdateUserAppInfoCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(GetUserLanguageCommandHandler).GetTypeInfo().Assembly)
+container.RegisterAssemblyTypes(typeof(GetUserLanguageQueryHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(SaveUserLanguageCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(UpdateUserLanguageCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(InstructionCommandHandler).GetTypeInfo().Assembly)
+container.RegisterAssemblyTypes(typeof(InstructionQueryHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(CreateTaskCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(TaskTierByIdCommandHandler).GetTypeInfo().Assembly)
+container.RegisterAssemblyTypes(typeof(TaskTierByIdQueryHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(GetUserTaskCommandHandler).GetTypeInfo().Assembly)
+container.RegisterAssemblyTypes(typeof(GetUserTaskQueryHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(CancelTasksCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(CancelAllTasksCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(GetUserTaskBinCommandHandler).GetTypeInfo().Assembly)
+container.RegisterAssemblyTypes(typeof(GetUserTaskBinQueryHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(UpdateTaskCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
@@ -143,9 +156,9 @@ container.RegisterAssemblyTypes(typeof(UserAdminCommandHandler).GetTypeInfo().As
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(RemoveUserAdminCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(GetUserTasksExcelCommandHandler).GetTypeInfo().Assembly)
+container.RegisterAssemblyTypes(typeof(GetUserTasksExcelQueryHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(GetUserTasksBinExcelCommandHandler).GetTypeInfo().Assembly)
+container.RegisterAssemblyTypes(typeof(GetUserTasksBinExcelQueryHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
@@ -176,6 +189,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

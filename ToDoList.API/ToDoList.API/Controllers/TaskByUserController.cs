@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using ToDoList.API.Commands;
 using ToDoList.API.Commands.TaskByUserCommands;
+using ToDoList.API.Queries.TaskByUserQueries;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.DTO;
 using ToDoList.DTO.Translated;
@@ -76,7 +77,7 @@ namespace ToDoList.API.Controllers
             {
                 var userId = userClaim.Value;
 
-                GetUserTasksCommand taskCommand = new GetUserTasksCommand()
+                GetUserTaskQuery taskCommand = new GetUserTaskQuery()
                 {
                     UserId = userId,
                     TaskTierId = taskTierId,

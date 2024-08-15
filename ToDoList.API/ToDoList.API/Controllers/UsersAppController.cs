@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ToDoList.API.Commands;
+using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
@@ -34,7 +35,7 @@ namespace ToDoList.API.Controllers
             {
                 var userId = userClaim.Value;
 
-                GetUserAppInfoCommand userInformationCommand = new GetUserAppInfoCommand()
+                GetUserAppInfoQuery userInformationCommand = new GetUserAppInfoQuery()
                 {
                   UserId = userId
                 };

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Security.Claims;
 using ToDoList.API.Commands;
+using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
 
@@ -34,7 +35,7 @@ namespace ToDoList.API.Controllers
             {
                 var userId = userClaim.Value;
 
-                GetUserLanguageCommand userLanguageCommand = new GetUserLanguageCommand()
+                GetUserLanguageQuery userLanguageCommand = new GetUserLanguageQuery()
                 {
                     UserId = userId
                 };

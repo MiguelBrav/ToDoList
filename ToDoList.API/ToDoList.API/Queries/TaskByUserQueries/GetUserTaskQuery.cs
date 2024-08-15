@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using ToDoList.DTO.ApiResponse;
 
-namespace ToDoList.API.Commands.TaskByUserCommands
+namespace ToDoList.API.Queries.TaskByUserQueries
 {
-    public class GetUserTasksCommand : IRequest<ApiResponse>
+    public class GetUserTaskQuery : IRequest<ApiResponse>
     {
         public string UserId { get; set; }
         public int PageId { get; set; }
