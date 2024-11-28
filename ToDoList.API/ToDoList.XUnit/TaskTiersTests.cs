@@ -111,7 +111,7 @@ public class TaskTiersTests
             TaskTierId = taskId
         };
 
-        var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = JsonConvert.SerializeObject(new TaskTierTranslated()) };
+        var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = JsonConvert.SerializeObject(new TaskTierTranslated()) };
 
         mediatorSub.Send(taskQuery, default).Returns(Task.FromResult(apiResponse));
 
