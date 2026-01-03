@@ -38,6 +38,14 @@ For more information, you can check this swagger doc online about the ygo client
 
 To run tests, run AccountTests.cs from project ToDoList.XUnit
 
+## Versioning
+
+Updated from .NET 6 to .NET 8 (02/01/2026)
+
+## Package References
+
+All NuGet packages updated to compatible .NET 8 versions. (02/01/2026)
+
 ## Feedback
 
 If you have any feedback, please reach out to me.
