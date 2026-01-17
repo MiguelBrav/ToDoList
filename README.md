@@ -6,12 +6,12 @@ For this project, we use SQL Server as the database. The database schema include
 
 ## Usage/Examples for ToDoList.API
 
-This ToDo List API allows users to manage their tasks. It is built with .NET 6 and includes features for user authorization, adding tasks, marking tasks as completed, and deleting tasks,etc.  
+This ToDo List API allows users to manage their tasks. It is built with .NET 8 and includes features for user authorization, adding tasks, marking tasks as completed, and deleting tasks,etc.  
 The available languages ​​are es-mx (Spanish - Español) and en-us (English - Ingles)
 YGO Client
 ```
 curl -X 'GET' \
-  'https://todolist.application-service.work/TaskTiers/es-mx' \
+  'https://todo.segurab.com/TaskTiers/es-mx' \
   -H 'accept: */*'
 ```
 ![App Screenshot](https://res.cloudinary.com/imgresd/image/upload/v1720242430/Github/astygcvwwvmbeh38ezin.png)
@@ -30,9 +30,9 @@ You can successfully register, log in, and interact with the ToDo List API using
 
 ![App Screenshot](https://res.cloudinary.com/imgresd/image/upload/v1720242462/Github/hrm3rfmypzpivkvieh55.png)
 
-You can consume the API using this URL: "https://todolist.application-service.work/".
+You can consume the API using this URL: "https://todo.segurab.com/".
 
-For more information, you can check this swagger doc online about the ygo client. [ToDoListApi - Swagger Documentation](https://todolist.application-service.work/swagger/index.html)
+For more information, you can check this swagger doc online about the ygo client. [ToDoListApi - Swagger Documentation](https://todo.segurab.com/swagger/index.html)
 
 ## Running Tests
 
