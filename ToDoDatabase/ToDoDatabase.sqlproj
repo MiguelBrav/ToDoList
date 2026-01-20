@@ -81,5 +81,7 @@
   <ItemGroup>
     <None Include="Dbo\Data\DatabaseInfo.sql" />
     <None Include="Dbo\Data\ReleaseTables.sql" />
+    <None Include="Dbo\StoreProcedures\mysql.txt" />
+    <None Include="Dbo\Data\Releasemysql.txt" />
   </ItemGroup>
 </Project>
