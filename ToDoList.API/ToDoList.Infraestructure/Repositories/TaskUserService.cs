@@ -1,5 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.AspNetUsers;
 using ToDoList.DTO.UsersApp;
+
 
 namespace ToDoList.Infraestructure.Repositories
 {
@@ -40,46 +41,97 @@ namespace ToDoList.Infraestructure.Repositories
 
         }
 
-        public async Task<List<TaskByUser>> GetTasksByUser(string userId, int pageId, int sizeId, int taskTierId, int orderById)
-        {
-            List<TaskByUser> result = await _dbContext.TaskByUser
-                            .FromSqlRaw("EXEC [dbo].[GetTasksByUserId] @UserId, @TaskTierId, @OrderBy, @PageSize, @PageNumber ",
-                                new SqlParameter("@UserId", userId),
-                                new SqlParameter("@PageNumber", pageId),
-                                new SqlParameter("@PageSize", sizeId),
-                                new SqlParameter("@TaskTierId", taskTierId),
-                                new SqlParameter("@OrderBy", orderById))
-                            .ToListAsync();
+        //public async Task<List<TaskByUser>> GetTasksByUser(string userId, int pageId, int sizeId, int taskTierId, int orderById)
+        //{
+        //    List<TaskByUser> result = await _dbContext.TaskByUser
+        //                    .FromSqlRaw("EXEC [dbo].[GetTasksByUserId] @UserId, @TaskTierId, @OrderBy, @PageSize, @PageNumber ",
+        //                        new SqlParameter("@UserId", userId),
+        //                        new SqlParameter("@PageNumber", pageId),
+        //                        new SqlParameter("@PageSize", sizeId),
+        //                        new SqlParameter("@TaskTierId", taskTierId),
+        //                        new SqlParameter("@OrderBy", orderById))
+        //                    .ToListAsync();
 
-            return result;
+        //    return result;
+        //}
+
+        //public async Task<List<TaskByUser>> GetTasksByUserBin(string userId, int pageId, int sizeId, int taskTierId, int orderById)
+        //{
+        //    List<TaskByUser> result = await _dbContext.TaskByUser
+        //                    .FromSqlRaw("EXEC [dbo].[GetTasksByUserIdBin] @UserId, @TaskTierId, @OrderBy, @PageSize, @PageNumber ",
+        //                        new SqlParameter("@UserId", userId),
+        //                        new SqlParameter("@PageNumber", pageId),
+        //                        new SqlParameter("@PageSize", sizeId),
+        //                        new SqlParameter("@TaskTierId", taskTierId),
+        //                        new SqlParameter("@OrderBy", orderById))
+        //                    .ToListAsync();
+
+        //    return result;
+        //}
+
+        public async Task<List<TaskByUser>> GetTasksByUser(
+          string userId, int pageId, int sizeId, int taskTierId, int orderById)
+        {
+            return await _dbContext.TaskByUser
+                .FromSqlRaw(
+                    "CALL GetTasksByUserId(@UserId, @TaskTierId, @OrderBy, @PageSize, @PageNumber);",
+                    new MySqlParameter("@UserId", userId),
+                    new MySqlParameter("@TaskTierId", taskTierId),
+                    new MySqlParameter("@OrderBy", orderById),
+                    new MySqlParameter("@PageSize", sizeId),
+                    new MySqlParameter("@PageNumber", pageId)
+                )
+                .ToListAsync();
         }
 
-        public async Task<List<TaskByUser>> GetTasksByUserBin(string userId, int pageId, int sizeId, int taskTierId, int orderById)
+        public async Task<List<TaskByUser>> GetTasksByUserBin(
+            string userId, int pageId, int sizeId, int taskTierId, int orderById)
         {
-            List<TaskByUser> result = await _dbContext.TaskByUser
-                            .FromSqlRaw("EXEC [dbo].[GetTasksByUserIdBin] @UserId, @TaskTierId, @OrderBy, @PageSize, @PageNumber ",
-                                new SqlParameter("@UserId", userId),
-                                new SqlParameter("@PageNumber", pageId),
-                                new SqlParameter("@PageSize", sizeId),
-                                new SqlParameter("@TaskTierId", taskTierId),
-                                new SqlParameter("@OrderBy", orderById))
-                            .ToListAsync();
-
-            return result;
+            return await _dbContext.TaskByUser
+                .FromSqlRaw(
+                    "CALL GetTasksByUserIdBin(@UserId, @TaskTierId, @OrderBy, @PageSize, @PageNumber);",
+                    new MySqlParameter("@UserId", userId),
+                    new MySqlParameter("@TaskTierId", taskTierId),
+                    new MySqlParameter("@OrderBy", orderById),
+                    new MySqlParameter("@PageSize", sizeId),
+                    new MySqlParameter("@PageNumber", pageId)
+                )
+                .ToListAsync();
         }
 
+
+        //public async Task<bool> CancelAllTasksByUser(string userId)
+        //{
+        //    try
+        //    {
+        //        var sql = "UPDATE [dbo].[TaskByUser] SET IsDeleted = 1 WHERE IsDeleted = 0 AND CreatedUserId = @userId";
+
+        //        await _dbContext.Database.ExecuteSqlRawAsync(sql, new SqlParameter("@userId", userId));
+
+        //        return true;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return false;
+        //    }
+        //}
 
         public async Task<bool> CancelAllTasksByUser(string userId)
         {
             try
             {
-                var sql = "UPDATE [dbo].[TaskByUser] SET IsDeleted = 1 WHERE IsDeleted = 0 AND CreatedUserId = @userId";
+                var sql = @"UPDATE TaskByUser
+                            SET IsDeleted = 1
+                            WHERE IsDeleted = 0 AND CreatedUserId = @userId";
 
-                await _dbContext.Database.ExecuteSqlRawAsync(sql, new SqlParameter("@userId", userId));
+                await _dbContext.Database.ExecuteSqlRawAsync(
+                    sql,
+                    new MySqlParameter("@userId", userId)
+                );
 
                 return true;
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }
@@ -135,17 +187,38 @@ namespace ToDoList.Infraestructure.Repositories
 
         }
 
+        //public async Task<bool> RestoreAllTasksByUser(string userId)
+        //{
+        //    try
+        //    {
+        //        var sql = "UPDATE [dbo].[TaskByUser] SET IsDeleted = 0 WHERE IsDeleted = 1 AND CreatedUserId = @userId";
+
+        //        await _dbContext.Database.ExecuteSqlRawAsync(sql, new SqlParameter("@userId", userId));
+
+        //        return true;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return false;
+        //    }
+        //}
+
         public async Task<bool> RestoreAllTasksByUser(string userId)
         {
             try
             {
-                var sql = "UPDATE [dbo].[TaskByUser] SET IsDeleted = 0 WHERE IsDeleted = 1 AND CreatedUserId = @userId";
+                var sql = @"UPDATE TaskByUser
+                            SET IsDeleted = 0
+                            WHERE IsDeleted = 1 AND CreatedUserId = @userId";
 
-                await _dbContext.Database.ExecuteSqlRawAsync(sql, new SqlParameter("@userId", userId));
+                await _dbContext.Database.ExecuteSqlRawAsync(
+                    sql,
+                    new MySqlParameter("@userId", userId)
+                );
 
                 return true;
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }

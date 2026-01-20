@@ -15,7 +15,7 @@ namespace ToDoList.Infraestructure
 {
     public class AppDBContext : IdentityDbContext
     {
-        public const string DBO_SCHEMA = "dbo";
+        //public const string DBO_SCHEMA = "dbo";
 
         public AppDBContext(DbContextOptions options) : base(options) { 
         }        

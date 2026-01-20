@@ -1,21 +1,32 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+# Consulte https://aka.ms/customizecontainer para aprender a personalizar su contenedor de depuración y cómo Visual Studio usa este Dockerfile para compilar sus imágenes para una depuración más rápida.
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+# Esta fase se usa cuando se ejecuta desde VS en modo rápido (valor predeterminado para la configuración de depuración)
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER $APP_UID
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
+EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+
+# Esta fase se usa para compilar el proyecto de servicio
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["ToDoList.API.csproj", "."]
-RUN dotnet restore "./ToDoList.API.csproj"
+COPY ["ToDoList.API/ToDoList.API.csproj", "ToDoList.API/"]
+COPY ["ToDoList.Domain/ToDoList.Domain.csproj", "ToDoList.Domain/"]
+COPY ["ToDoList.DTO/ToDoList.DTO.csproj", "ToDoList.DTO/"]
+COPY ["ToDoList.Infraestructure/ToDoList.Infraestructure.csproj", "ToDoList.Infraestructure/"]
+RUN dotnet restore "./ToDoList.API/ToDoList.API.csproj"
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "ToDoList.API.csproj" -c Release -o /app/build
+WORKDIR "/src/ToDoList.API"
+RUN dotnet build "./ToDoList.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
+# Esta fase se usa para publicar el proyecto de servicio que se copiará en la fase final.
 FROM build AS publish
-RUN dotnet publish "ToDoList.API.csproj" -c Release -o /app/publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./ToDoList.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
+# Esta fase se usa en producción o cuando se ejecuta desde VS en modo normal (valor predeterminado cuando no se usa la configuración de depuración)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

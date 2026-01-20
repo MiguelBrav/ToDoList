@@ -80,15 +80,34 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddDbContext<AppDBContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-sqlServerOptions => {
-    sqlServerOptions.EnableRetryOnFailure(
-        maxRetryCount: 5,
-        maxRetryDelay: TimeSpan.FromSeconds(60),
-        errorNumbersToAdd: null
+//options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+//sqlServerOptions => {
+//    sqlServerOptions.EnableRetryOnFailure(
+//        maxRetryCount: 5,
+//        maxRetryDelay: TimeSpan.FromSeconds(60),
+//        errorNumbersToAdd: null
+//        );
+//    sqlServerOptions.CommandTimeout(60);
+//}), ServiceLifetime.Transient);
+
+options.UseMySql(
+    builder.Configuration.GetConnectionString("DefaultConnection"),
+    ServerVersion.AutoDetect(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ),
+    mySqlOptions =>
+    {
+        mySqlOptions.CommandTimeout(60);
+        mySqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(60),
+            errorNumbersToAdd: null
         );
-    sqlServerOptions.CommandTimeout(60);
-}), ServiceLifetime.Transient);
+    }
+),
+ServiceLifetime.Transient);
+
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opciones => opciones.TokenValidationParameters = new TokenValidationParameters
     {
