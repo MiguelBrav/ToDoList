@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using ToDoList.DTO.ApiResponse;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Commands.AdminCommands
 {
-    public class RemoveUserAdminCommandHandler : IRequestHandler<RemoveUserAdminCommand, ApiResponse>
+    public class RemoveUserAdminCommandHandler : UseCaseBase<RemoveUserAdminCommand, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -22,7 +23,7 @@ namespace ToDoList.API.Commands.AdminCommands
             _keyAdmin = _configuration.GetValue<string>("key_Admin");
         }
 
-        public async Task<ApiResponse> Handle(RemoveUserAdminCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(RemoveUserAdminCommand request)
         {
             ApiResponse response = new ApiResponse();
 

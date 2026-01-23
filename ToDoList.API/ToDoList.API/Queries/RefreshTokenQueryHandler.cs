@@ -5,13 +5,15 @@ using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ToDoList.API.Commands;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Queries
 {
-    public class RefreshTokenQueryHandler : IRequestHandler<RefreshTokenQuery, ApiResponse>
+    public class RefreshTokenQueryHandler : UseCaseBase<RefreshTokenQuery, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -29,7 +31,7 @@ namespace ToDoList.API.Queries
             _keyJwt = _configuration["key_jwt"] ?? "";
         }
 
-        public async Task<ApiResponse> Handle(RefreshTokenQuery request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(RefreshTokenQuery request)
         {
             ApiResponse response = new ApiResponse();
 
