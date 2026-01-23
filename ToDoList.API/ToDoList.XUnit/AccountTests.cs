@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using System.Text.Json;
+using ToDoList.API.Aggregators;
+using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Commands;
 using ToDoList.API.Commands.AdminCommands;
 using ToDoList.API.Queries;
@@ -18,7 +20,8 @@ public class AccountTests
     public async Task CreateUser_ReturnsStatusCode400_WhenUserAlreadyExists(string email)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var createUserCommand = new CreateUserCommand
         {
             Email = email,
@@ -30,11 +33,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The user already exists." };
 
-
-        mediatorSub.Send(createUserCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(createUserCommand, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.CreateUserCommand(createUserCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(createUserCommand);
+        //var response = await mediatorSub.Send(createUserCommand);
+        var response = await accountAggregator.CreateUserCommand(createUserCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -50,7 +54,8 @@ public class AccountTests
     public async Task CreateUser_ReturnsStatusCode400_WhenUserCantCreate(string email)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var createUserCommand = new CreateUserCommand
         {
             Email = email,
@@ -62,10 +67,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The user could not register" };
 
-        mediatorSub.Send(createUserCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(createUserCommand, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.CreateUserCommand(createUserCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(createUserCommand);
+        //var response = await mediatorSub.Send(createUserCommand);
+        var response = await accountAggregator.CreateUserCommand(createUserCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -81,7 +88,8 @@ public class AccountTests
     public async Task CreateUser_ReturnsStatusCode200_WhenUserIsCreated(string email)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var createUserCommand = new CreateUserCommand
         {
             Email = email,
@@ -93,10 +101,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = "The user registered successfully." };
 
-        mediatorSub.Send(createUserCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(createUserCommand, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.CreateUserCommand(createUserCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(createUserCommand);
+        //var response = await mediatorSub.Send(createUserCommand);
+        var response = await accountAggregator.CreateUserCommand(createUserCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -112,7 +122,8 @@ public class AccountTests
     public async Task LoginUser_ReturnsStatusCode400_WhenUserCantLogin(string email, string password)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var loginUserCommand = new LoginUserCommand
         {
             Email = email,
@@ -121,10 +132,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The user could not login." };
 
-        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.LoginUserCommand(loginUserCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(loginUserCommand);
+        //var response = await mediatorSub.Send(loginUserCommand);
+        var response = await accountAggregator.LoginUserCommand(loginUserCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -140,7 +153,8 @@ public class AccountTests
     public async Task LoginUser_ReturnsStatusCode200_WhenUserLogin(string email, string password)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var loginUserCommand = new LoginUserCommand
         {
             Email = email,
@@ -149,10 +163,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = JsonSerializer.Serialize(new ResponseAuth()) };
 
-        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.LoginUserCommand(loginUserCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(loginUserCommand);
+        //var response = await mediatorSub.Send(loginUserCommand);
+        var response = await accountAggregator.LoginUserCommand(loginUserCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -170,7 +186,8 @@ public class AccountTests
     public async Task MakeUserAdmin_ReturnsStatusCode400_WhenUserDoesNotExists(string email, string keyAdmin)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var loginUserCommand = new UserAdminCommand
         {
             Email = email,
@@ -179,10 +196,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The user does not exists." };
 
-        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.UserAdminCommand(loginUserCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(loginUserCommand);
+        //var response = await mediatorSub.Send(loginUserCommand);
+        var response = await accountAggregator.UserAdminCommand(loginUserCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -198,7 +217,8 @@ public class AccountTests
     public async Task MakeUserAdmin_ReturnsStatusCode400_WhenUserKeyIsInvalid(string email, string keyAdmin)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var loginUserCommand = new UserAdminCommand
         {
             Email = email,
@@ -207,10 +227,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The key admin is invalid." };
 
-        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.UserAdminCommand(loginUserCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(loginUserCommand);
+        //var response = await mediatorSub.Send(loginUserCommand);
+        var response = await accountAggregator.UserAdminCommand(loginUserCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -227,7 +249,8 @@ public class AccountTests
     public async Task MakeUserAdmin_ReturnsStatusCode200_WhenUserIsAssingAdmin(string email, string keyAdmin)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var loginUserCommand = new UserAdminCommand
         {
             Email = email,
@@ -236,10 +259,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = "The admin role is added for the user" };
 
-        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.UserAdminCommand(loginUserCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(loginUserCommand);
+        //var response = await mediatorSub.Send(loginUserCommand);
+        var response = await accountAggregator.UserAdminCommand(loginUserCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -255,7 +280,8 @@ public class AccountTests
     public async Task MakeUserAdmin_ReturnsStatusCode200_WhenUserIsAlreadyAdmin(string email, string keyAdmin)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var loginUserCommand = new UserAdminCommand
         {
             Email = email,
@@ -264,10 +290,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = "The user is already admin." };
 
-        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.UserAdminCommand(loginUserCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(loginUserCommand);
+        //var response = await mediatorSub.Send(loginUserCommand);
+        var response = await accountAggregator.UserAdminCommand(loginUserCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -284,7 +312,8 @@ public class AccountTests
     public async Task RemoveUserAdmin_ReturnsStatusCode400_WhenUserDoesNotExists(string email, string keyAdmin)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var loginUserCommand = new RemoveUserAdminCommand
         {
             Email = email,
@@ -293,10 +322,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The user does not exists." };
 
-        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.RemoveUserAdminCommand(loginUserCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(loginUserCommand);
+        //var response = await mediatorSub.Send(loginUserCommand);
+        var response = await accountAggregator.RemoveUserAdminCommand(loginUserCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -313,7 +344,8 @@ public class AccountTests
     public async Task RemoveUserAdmin_ReturnsStatusCode400_WhenUserKeyIsInvalid(string email, string keyAdmin)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var loginUserCommand = new RemoveUserAdminCommand
         {
             Email = email,
@@ -322,10 +354,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The key admin is invalid." };
 
-        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.RemoveUserAdminCommand(loginUserCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(loginUserCommand);
+        //var response = await mediatorSub.Send(loginUserCommand);
+        var response = await accountAggregator.RemoveUserAdminCommand(loginUserCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -341,7 +375,8 @@ public class AccountTests
     public async Task RemoveUserAdmin_ReturnsStatusCode200_WhenUserIsRemovedFromAdminRole(string email, string keyAdmin)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var loginUserCommand = new RemoveUserAdminCommand
         {
             Email = email,
@@ -350,10 +385,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = "The admin role is deleted for the user" };
 
-        mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(loginUserCommand, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.RemoveUserAdminCommand(loginUserCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(loginUserCommand);
+        //var response = await mediatorSub.Send(loginUserCommand);
+        var response = await accountAggregator.RemoveUserAdminCommand(loginUserCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -369,7 +406,8 @@ public class AccountTests
     public async Task RefreshToken_ReturnsStatusCode400_WhenUserDoesNotExists(string email)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var refreshQuery = new RefreshTokenQuery
         {
             Email = email
@@ -377,10 +415,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The user does not exists." };
 
-        mediatorSub.Send(refreshQuery, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(refreshQuery, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.RefreshTokenQuery(refreshQuery).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(refreshQuery);
+        //var response = await mediatorSub.Send(refreshQuery);
+        var response = await accountAggregator.RefreshTokenQuery(refreshQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -396,7 +436,8 @@ public class AccountTests
     public async Task RefreshToken_ReturnsStatusCode200_WhenEmailIsValid(string email)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var accountAggregator = Substitute.For<IAccountAggregator>();
         var refreshQuery = new RefreshTokenQuery
         {
             Email = email
@@ -404,10 +445,12 @@ public class AccountTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = JsonSerializer.Serialize(new ResponseAuth()) };
 
-        mediatorSub.Send(refreshQuery, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(refreshQuery, default).Returns(Task.FromResult(apiResponse));
+        accountAggregator.RefreshTokenQuery(refreshQuery).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(refreshQuery);
+        //var response = await mediatorSub.Send(refreshQuery);
+        var response = await accountAggregator.RefreshTokenQuery(refreshQuery);
 
         // Assert
         Assert.NotNull(response);

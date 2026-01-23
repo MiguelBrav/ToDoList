@@ -3,7 +3,7 @@ using ToDoList.DTO.ApiResponse;
 
 namespace ToDoList.API.Queries
 {
-    public class RefreshTokenQuery : IRequest<ApiResponse>
+    public class RefreshTokenQuery 
     {
         public string Email { get; set; }
     }

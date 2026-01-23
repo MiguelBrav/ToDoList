@@ -10,6 +10,8 @@ using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Text;
+using ToDoList.API.Aggregators;
+using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Commands;
 using ToDoList.API.Commands.AdminCommands;
 using ToDoList.API.Commands.TaskByUserBinCommands;
@@ -22,6 +24,7 @@ using ToDoList.Domain.Helper;
 using ToDoList.Domain.Interfaces;
 using ToDoList.Infraestructure;
 using ToDoList.Infraestructure.Repositories;
+using UseCaseCore.UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -127,10 +130,10 @@ container.Populate(builder.Services);
 container.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly).AsImplementedInterfaces();
 
 //Configuracion de comandos
-container.RegisterAssemblyTypes(typeof(CreateUserCommandHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(LoginUserCommandHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(CreateUserCommandHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(LoginUserCommandHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(ValidateTokenCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(TaskTierQueryHandler).GetTypeInfo().Assembly)
@@ -175,10 +178,10 @@ container.RegisterAssemblyTypes(typeof(CleanTasksCommandHandler).GetTypeInfo().A
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(CleansAllTasksCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(UserAdminCommandHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(RemoveUserAdminCommandHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(UserAdminCommandHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(RemoveUserAdminCommandHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(GetUserTasksExcelQueryHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(GetUserTasksBinExcelQueryHandler).GetTypeInfo().Assembly)
@@ -192,6 +195,13 @@ builder.Services.AddAuthorization(options => {
     options.AddPolicy(builder.Configuration["PolicyAdmin"], policy => policy.RequireClaim(builder.Configuration["PolicyAdminClaim"]));
 });
 
+// migrate from mediatr
+builder.Services.AddTransient<CreateUserCommandHandler>();
+builder.Services.AddTransient<LoginUserCommandHandler>();
+builder.Services.AddTransient<RefreshTokenQueryHandler>();
+builder.Services.AddTransient<UserAdminCommandHandler>();
+builder.Services.AddTransient<RemoveUserAdminCommandHandler>();
+builder.Services.AddTransient<UseCaseDispatcher>();
 builder.Services.AddTransient<IUsersAppService, UsersAppService>();
 builder.Services.AddTransient<ITaskTierTranslatedService, TaskTierTranslatedService>();
 builder.Services.AddTransient<IGendersTranslatedService, GendersTranslatedService>();
@@ -201,6 +211,7 @@ builder.Services.AddTransient<IInstructionsTranslatedService, InstructionsTransl
 builder.Services.AddTransient<ITaskUserService, TaskUserService>();
 builder.Services.AddTransient<ITaskUserHistoricalService, TaskUserHistoricalService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
+builder.Services.AddTransient<IAccountAggregator, AccountAggregator>();
 
 var app = builder.Build();
 

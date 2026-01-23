@@ -8,10 +8,11 @@ using System.Text;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Commands
 {
-    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, ApiResponse>
+    public class LoginUserCommandHandler : UseCaseBase<LoginUserCommand, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -28,7 +29,7 @@ namespace ToDoList.API.Commands
             _keyJwt = _configuration["key_jwt"] ?? "";
         }
 
-        public async Task<ApiResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(LoginUserCommand request)
         {
             ApiResponse response = new ApiResponse();
 

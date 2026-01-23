@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Commands
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, ApiResponse>
+    public class CreateUserCommandHandler : UseCaseBase<CreateUserCommand, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -19,7 +20,7 @@ namespace ToDoList.API.Commands
             _usersAppService = usersAppService;
         }
 
-        public async Task<ApiResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(CreateUserCommand request)
         {
             ApiResponse response = new ApiResponse();
 

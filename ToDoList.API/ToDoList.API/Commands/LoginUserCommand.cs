@@ -3,7 +3,7 @@ using ToDoList.DTO.ApiResponse;
 
 namespace ToDoList.API.Commands
 {
-    public class LoginUserCommand : IRequest<ApiResponse>
+    public class LoginUserCommand 
     {
 		public string Email { get; set; }
 		public string Password { get; set; }

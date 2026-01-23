@@ -3,7 +3,7 @@ using ToDoList.DTO.ApiResponse;
 
 namespace ToDoList.API.Commands
 {
-    public class CreateUserCommand : IRequest<ApiResponse>
+    public class CreateUserCommand 
     {
 		public string Email { get; set; }
 		public string Name { get; set; }
