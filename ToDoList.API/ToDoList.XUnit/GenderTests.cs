@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Newtonsoft.Json;
 using NSubstitute;
+using ToDoList.API.Aggregators.Interfaces;
+using ToDoList.API.Commands;
 using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
@@ -17,7 +19,8 @@ public class GenderTests
     public async Task GetGenders_ReturnsStatusCode404_WhenResultsIsNullOrEmpty(string languageId)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var genderAggregator = Substitute.For<IGenderAggregator>();
         var gendersQuery = new GendersQuery
         {
            LanguageId = languageId
@@ -25,10 +28,12 @@ public class GenderTests
 
         var apiResponse = new ApiResponse { StatusCode = 404, ResponseMessage = "Error while retrieving the information." };
 
-        mediatorSub.Send(gendersQuery, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(gendersQuery, default).Returns(Task.FromResult(apiResponse));
+        genderAggregator.GendersQuery(gendersQuery).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(gendersQuery);
+        //var response = await mediatorSub.Send(gendersQuery);
+        var response = await genderAggregator.GendersQuery(gendersQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -45,7 +50,9 @@ public class GenderTests
     public async Task GetGenders_ReturnsStatusCode200_WhenResultsAreOk(string languageId)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var genderAggregator = Substitute.For<IGenderAggregator>();
+
         var gendersQuery = new GendersQuery
         {
             LanguageId = languageId
@@ -53,10 +60,12 @@ public class GenderTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = JsonConvert.SerializeObject(new List<GendersTranslated> ()) };
 
-        mediatorSub.Send(gendersQuery, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(gendersQuery, default).Returns(Task.FromResult(apiResponse));
+        genderAggregator.GendersQuery(gendersQuery).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(gendersQuery);
+        //var response = await mediatorSub.Send(gendersQuery);
+        var response = await genderAggregator.GendersQuery(gendersQuery);
         var deserializedGenders = JsonConvert.DeserializeObject<List<GendersTranslated>>(response.ResponseMessage);
 
         // Assert

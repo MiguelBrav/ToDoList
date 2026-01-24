@@ -138,8 +138,8 @@ container.RegisterAssemblyTypes(typeof(ValidateTokenCommandHandler).GetTypeInfo(
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(TaskTierQueryHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(GendersQueryHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(GendersQueryHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(UserProfileCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(UpdateUserProfileCommandHandler).GetTypeInfo().Assembly)
@@ -201,6 +201,7 @@ builder.Services.AddTransient<LoginUserCommandHandler>();
 builder.Services.AddTransient<RefreshTokenQueryHandler>();
 builder.Services.AddTransient<UserAdminCommandHandler>();
 builder.Services.AddTransient<RemoveUserAdminCommandHandler>();
+builder.Services.AddTransient<GendersQueryHandler>();
 builder.Services.AddTransient<UseCaseDispatcher>();
 builder.Services.AddTransient<IUsersAppService, UsersAppService>();
 builder.Services.AddTransient<ITaskTierTranslatedService, TaskTierTranslatedService>();
@@ -212,6 +213,7 @@ builder.Services.AddTransient<ITaskUserService, TaskUserService>();
 builder.Services.AddTransient<ITaskUserHistoricalService, TaskUserHistoricalService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IAccountAggregator, AccountAggregator>();
+builder.Services.AddTransient<IGenderAggregator, GenderAggregator>();
 
 var app = builder.Build();
 
