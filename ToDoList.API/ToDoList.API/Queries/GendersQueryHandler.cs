@@ -1,18 +1,12 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿using Newtonsoft.Json;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
-using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Queries
 {
-    public class GendersQueryHandler : IRequestHandler<GendersQuery, ApiResponse>
+    public class GendersQueryHandler : UseCaseBase<GendersQuery, ApiResponse>
     {
         private readonly IGendersTranslatedService _gendersTranslatedService;
 
@@ -21,7 +15,7 @@ namespace ToDoList.API.Queries
             _gendersTranslatedService = gendersTranslatedService;
         }
 
-        public async Task<ApiResponse> Handle(GendersQuery request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(GendersQuery request)
         {
             ApiResponse response = new ApiResponse();
 

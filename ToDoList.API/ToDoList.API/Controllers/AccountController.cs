@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -14,11 +13,9 @@ namespace ToDoList.API.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly IMediator _mediator;
         private readonly IAccountAggregator _aggregator;
-        public AccountController(IMediator mediator, IAccountAggregator aggregator)
+        public AccountController(IAccountAggregator aggregator)
         {
-            _mediator = mediator;
             _aggregator = aggregator;
         }
 
