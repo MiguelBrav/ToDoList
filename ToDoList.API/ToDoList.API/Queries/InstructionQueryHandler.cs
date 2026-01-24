@@ -9,10 +9,11 @@ using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Queries
 {
-    public class InstructionQueryHandler : IRequestHandler<InstructionQuery, ApiResponse>
+    public class InstructionQueryHandler : UseCaseBase<InstructionQuery, ApiResponse>
     {
         private readonly IInstructionsTranslatedService _instructionsTranslatedService;
 
@@ -21,7 +22,7 @@ namespace ToDoList.API.Queries
             _instructionsTranslatedService = instructionsTranslatedService;
         }
 
-        public async Task<ApiResponse> Handle(InstructionQuery request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(InstructionQuery request)
         {
             ApiResponse response = new ApiResponse();
 

@@ -1,18 +1,12 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿using Newtonsoft.Json;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
-using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Queries
 {
-    public class InstructionByIdQueryHandler : IRequestHandler<InstructionByIdQuery, ApiResponse>
+    public class InstructionByIdQueryHandler : UseCaseBase<InstructionByIdQuery, ApiResponse>
     {
         private readonly IInstructionsTranslatedService _instructionsTranslatedService;
 
@@ -21,7 +15,7 @@ namespace ToDoList.API.Queries
             _instructionsTranslatedService = instructionsTranslatedService;
         }
 
-        public async Task<ApiResponse> Handle(InstructionByIdQuery request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(InstructionByIdQuery request)
         {
             ApiResponse response = new ApiResponse();
 
