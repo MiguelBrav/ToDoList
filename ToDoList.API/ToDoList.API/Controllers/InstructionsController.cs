@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
@@ -11,10 +12,10 @@ namespace ToDoList.API.Controllers
     [Route("[controller]")]
     public class InstructionsController : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public InstructionsController(IMediator mediator)
+        private readonly IInstructionAggregator _aggregator;
+        public InstructionsController(IInstructionAggregator aggregator)
         {
-            _mediator = mediator;
+            _aggregator = aggregator;
         }
 
         /// <summary>
@@ -30,7 +31,7 @@ namespace ToDoList.API.Controllers
 
             InstructionQuery command = new InstructionQuery { LanguageId = languageId };
 
-            ApiResponse responseInstructions = await _mediator.Send(command);
+            ApiResponse responseInstructions = await _aggregator.InstructionQuery(command);
 
             if (responseInstructions.Response == null || responseInstructions.Response is false)
                 return StatusCode(responseInstructions.StatusCode, responseInstructions.Response);
@@ -51,7 +52,7 @@ namespace ToDoList.API.Controllers
 
             InstructionByIdQuery command = new InstructionByIdQuery { InstructionId = instructionId, LanguageId = languageId };
 
-            ApiResponse responseInstruction = await _mediator.Send(command);
+            ApiResponse responseInstruction = await _aggregator.InstructionByIdQuery(command);
 
             if (responseInstruction.Response == null || responseInstruction.Response is false)
                 return StatusCode(responseInstruction.StatusCode, responseInstruction.Response);
