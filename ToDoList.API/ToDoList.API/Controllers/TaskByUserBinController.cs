@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Commands;
 using ToDoList.API.Commands.TaskByUserBinCommands;
 using ToDoList.API.Commands.TaskByUserCommands;
@@ -18,10 +19,10 @@ namespace ToDoList.API.Controllers
     [Route("[controller]")]
     public class TaskByUserBinController : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public TaskByUserBinController(IMediator mediator)
+        private readonly ITaskUserBinAggregator _aggregator;
+        public TaskByUserBinController(ITaskUserBinAggregator aggregator)
         {
-            _mediator = mediator;
+            _aggregator = aggregator;
         }
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace ToDoList.API.Controllers
             {
                 var userId = userClaim.Value;
 
-                GetUserTasksBinCommand taskCommand = new GetUserTasksBinCommand()
+                GetUserTaskBinQuery taskCommand = new GetUserTaskBinQuery()
                 {
                     UserId = userId,
                     TaskTierId = taskTierId,
@@ -54,7 +55,7 @@ namespace ToDoList.API.Controllers
                     SizeId = sizeId
                 };
 
-                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+                ApiResponse responseTasks = await _aggregator.GetUserTaskBinQuery(taskCommand);
 
                 if (responseTasks.StatusCode == 204)
                     return StatusCode(responseTasks.StatusCode);
@@ -95,7 +96,7 @@ namespace ToDoList.API.Controllers
                     TaskIds = TaskIds
                 };
 
-                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+                ApiResponse responseTasks = await _aggregator.RestoreTasksCommand(taskCommand);
 
                 if (responseTasks.Response == null || responseTasks.Response is false)
                     return StatusCode(responseTasks.StatusCode, responseTasks.Response);
@@ -127,7 +128,7 @@ namespace ToDoList.API.Controllers
                     UserId = userId
                 };
 
-                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+                ApiResponse responseTasks = await _aggregator.RestoreAllTasksCommand(taskCommand);
 
                 if (responseTasks.Response == null || responseTasks.Response is false)
                     return StatusCode(responseTasks.StatusCode, responseTasks.Response);
@@ -165,7 +166,7 @@ namespace ToDoList.API.Controllers
                     TaskIds = TaskIds
                 };
 
-                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+                ApiResponse responseTasks = await _aggregator.CleanTasksCommand(taskCommand);
 
                 if (responseTasks.Response == null || responseTasks.Response is false)
                     return StatusCode(responseTasks.StatusCode, responseTasks.Response);
@@ -197,7 +198,7 @@ namespace ToDoList.API.Controllers
                     UserId = userId
                 };
 
-                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+                ApiResponse responseTasks = await _aggregator.CleansAllTasksCommand(taskCommand);
 
                 if (responseTasks.Response == null || responseTasks.Response is false)
                     return StatusCode(responseTasks.StatusCode, responseTasks.Response);

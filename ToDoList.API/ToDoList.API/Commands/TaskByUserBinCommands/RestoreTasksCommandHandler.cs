@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Commands.TaskByUserBinCommands
 {
-    public class RestoreTasksCommandHandler : IRequestHandler<RestoreTasksCommand, ApiResponse>
+    public class RestoreTasksCommandHandler : UseCaseBase<RestoreTasksCommand, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -22,7 +23,7 @@ namespace ToDoList.API.Commands.TaskByUserBinCommands
             _taskUserService = taskUserService;
         }
 
-        public async Task<ApiResponse> Handle(RestoreTasksCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(RestoreTasksCommand request)
         {
             ApiResponse response = new ApiResponse();
 

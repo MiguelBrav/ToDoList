@@ -1,9 +1,6 @@
-﻿using MediatR;
-using ToDoList.DTO.ApiResponse;
-
-namespace ToDoList.API.Commands.TaskByUserBinCommands
+﻿namespace ToDoList.API.Commands.TaskByUserBinCommands
 {
-    public class CleansAllTasksCommand : IRequest<ApiResponse>
+    public class CleansAllTasksCommand 
     {
         public string UserId { get; set; }
     }

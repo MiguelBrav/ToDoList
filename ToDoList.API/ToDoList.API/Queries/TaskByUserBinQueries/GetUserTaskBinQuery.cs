@@ -1,9 +1,6 @@
-﻿using MediatR;
-using ToDoList.DTO.ApiResponse;
-
-namespace ToDoList.API.Queries.TaskByUserBinQueries
+﻿namespace ToDoList.API.Queries.TaskByUserBinQueries
 {
-    public class GetUserTasksBinCommand : IRequest<ApiResponse>
+    public class GetUserTaskBinQuery
     {
         public string UserId { get; set; }
         public int PageId { get; set; }
