@@ -1,18 +1,13 @@
 ﻿using ClosedXML.Excel;
-using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Queries.ReportQueries
 {
-    public class GetUserTasksExcelQueryHandler : IRequestHandler<GetUserTasksExcelQuery, ApiResponse>
+    public class GetUserTasksExcelQueryHandler : UseCaseBase<GetUserTasksExcelQuery, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -36,7 +31,7 @@ namespace ToDoList.API.Queries.ReportQueries
             _defaultLanguage = _configuration.GetValue<string>("DefaultLanguage");
         }
 
-        public async Task<ApiResponse> Handle(GetUserTasksExcelQuery request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(GetUserTasksExcelQuery request)
         {
             ApiResponse response = new ApiResponse();
 

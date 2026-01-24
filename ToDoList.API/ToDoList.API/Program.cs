@@ -182,10 +182,10 @@ container.RegisterAssemblyTypes(typeof(CleansAllTasksCommandHandler).GetTypeInfo
 //.AsClosedTypesOf(typeof(IRequestHandler<,>));
 //container.RegisterAssemblyTypes(typeof(RemoveUserAdminCommandHandler).GetTypeInfo().Assembly)
 //.AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(GetUserTasksExcelQueryHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(GetUserTasksBinExcelQueryHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(GetUserTasksExcelQueryHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(GetUserTasksBinExcelQueryHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
    .AddEntityFrameworkStores<AppDBContext>()
@@ -204,6 +204,8 @@ builder.Services.AddTransient<RemoveUserAdminCommandHandler>();
 builder.Services.AddTransient<GendersQueryHandler>();
 builder.Services.AddTransient<InstructionByIdQueryHandler>();
 builder.Services.AddTransient<InstructionQueryHandler>();
+builder.Services.AddTransient<GetUserTasksBinExcelQueryHandler>();
+builder.Services.AddTransient<GetUserTasksExcelQueryHandler>();
 builder.Services.AddTransient<UseCaseDispatcher>();
 builder.Services.AddTransient<IUsersAppService, UsersAppService>();
 builder.Services.AddTransient<ITaskTierTranslatedService, TaskTierTranslatedService>();
@@ -217,6 +219,7 @@ builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IAccountAggregator, AccountAggregator>();
 builder.Services.AddTransient<IGenderAggregator, GenderAggregator>();
 builder.Services.AddTransient<IInstructionAggregator, InstructionAggregator>();
+builder.Services.AddTransient<IReportAggregator, ReportAggregator>();
 
 var app = builder.Build();
 

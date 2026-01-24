@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Queries.ReportQueries;
 using ToDoList.DTO.ApiResponse;
 
@@ -10,10 +11,10 @@ namespace ToDoList.API.Controllers
     [Route("[controller]")]
     public class ReportController : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public ReportController(IMediator mediator)
+        private readonly IReportAggregator _aggregator;
+        public ReportController(IReportAggregator aggregator)
         {
-            _mediator = mediator;
+            _aggregator = aggregator;
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace ToDoList.API.Controllers
                     LanguageId = languageId
                 };
 
-                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+                ApiResponse responseTasks = await _aggregator.GetUserTasksExcelQuery(taskCommand);
 
                 if (responseTasks.StatusCode == 204)
                     return StatusCode(responseTasks.StatusCode);
@@ -79,7 +80,7 @@ namespace ToDoList.API.Controllers
                     LanguageId = languageId
                 };
 
-                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+                ApiResponse responseTasks = await _aggregator.GetUserTasksBinExcelQuery(taskCommand);
 
                 if (responseTasks.StatusCode == 204)
                     return StatusCode(responseTasks.StatusCode);
