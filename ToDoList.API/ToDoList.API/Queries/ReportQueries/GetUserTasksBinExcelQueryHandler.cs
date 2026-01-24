@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Queries.ReportQueries
 {
-    public class GetUserTasksBinExcelQueryHandler : IRequestHandler<GetUserTasksBinExcelQuery, ApiResponse>
+    public class GetUserTasksBinExcelQueryHandler : UseCaseBase<GetUserTasksBinExcelQuery, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -31,7 +32,7 @@ namespace ToDoList.API.Queries.ReportQueries
             _defaultLanguage = _configuration.GetValue<string>("DefaultLanguage");
         }
 
-        public async Task<ApiResponse> Handle(GetUserTasksBinExcelQuery request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(GetUserTasksBinExcelQuery request)
         {
             ApiResponse response = new ApiResponse();
 
