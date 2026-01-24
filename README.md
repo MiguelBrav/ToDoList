@@ -8,7 +8,7 @@ For this project, we use SQL Server as the database. The database schema include
 
 This ToDo List API allows users to manage their tasks. It is built with .NET 8 and includes features for user authorization, adding tasks, marking tasks as completed, and deleting tasks,etc.  
 The available languages ​​are es-mx (Spanish - Español) and en-us (English - Ingles)
-YGO Client
+
 ```
 curl -X 'GET' \
   'https://todo.segurab.com/TaskTiers/es-mx' \
