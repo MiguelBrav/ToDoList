@@ -1,17 +1,13 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Queries.TaskByUserBinQueries
 {
-    public class GetUserTaskBinQueryHandler : IRequestHandler<GetUserTasksBinCommand, ApiResponse>
+    public class GetUserTaskBinQueryHandler : UseCaseBase<GetUserTaskBinQuery, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -35,7 +31,7 @@ namespace ToDoList.API.Queries.TaskByUserBinQueries
             _defaultLanguage = _configuration.GetValue<string>("DefaultLanguage");
         }
 
-        public async Task<ApiResponse> Handle(GetUserTasksBinCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(GetUserTaskBinQuery request)
         {
             ApiResponse response = new ApiResponse();
 

@@ -6,10 +6,11 @@ using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Commands.TaskByUserBinCommands
 {
-    public class RestoreAllTasksCommandHandler : IRequestHandler<RestoreAllTasksCommand, ApiResponse>
+    public class RestoreAllTasksCommandHandler : UseCaseBase<RestoreAllTasksCommand, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -25,7 +26,7 @@ namespace ToDoList.API.Commands.TaskByUserBinCommands
             _taskUserService = taskUserService;
         }
 
-        public async Task<ApiResponse> Handle(RestoreAllTasksCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(RestoreAllTasksCommand request)
         {
             ApiResponse response = new ApiResponse();
 
