@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Newtonsoft.Json;
 using NSubstitute;
+using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Commands;
 using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
@@ -16,7 +17,8 @@ public class UserLanguageTests
     public async Task GetUserLanguage_ReturnsStatusCode404_WhenUserDoesNotExists()
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var langAggregator = Substitute.For<IUserLangAggregator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
         var userLanguageQuery = new GetUserLanguageQuery
         {
@@ -25,10 +27,12 @@ public class UserLanguageTests
 
         var apiResponse = new ApiResponse { StatusCode = 404, ResponseMessage = "The user does not exists." };
 
-        mediatorSub.Send(userLanguageQuery, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(userLanguageQuery, default).Returns(Task.FromResult(apiResponse));
+       langAggregator.GetUserLanguageQuery(userLanguageQuery).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(userLanguageQuery);
+        //var response = await mediatorSub.Send(userLanguageQuery);
+        var response = await langAggregator.GetUserLanguageQuery(userLanguageQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -43,7 +47,8 @@ public class UserLanguageTests
     public async Task GetUserLanguage_ReturnsStatusCode204_WhenUserSelectionDoesNotExists()
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var langAggregator = Substitute.For<IUserLangAggregator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
         var userLanguageQuery = new GetUserLanguageQuery
         {
@@ -52,10 +57,12 @@ public class UserLanguageTests
 
         var apiResponse = new ApiResponse { StatusCode = 204, ResponseMessage = "The user does not have language selection." };
 
-        mediatorSub.Send(userLanguageQuery, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(userLanguageQuery, default).Returns(Task.FromResult(apiResponse));
+        langAggregator.GetUserLanguageQuery(userLanguageQuery).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(userLanguageQuery);
+        //var response = await mediatorSub.Send(userLanguageQuery);
+        var response = await langAggregator.GetUserLanguageQuery(userLanguageQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -70,7 +77,8 @@ public class UserLanguageTests
     public async Task GetUserLanguage_ReturnsStatusCode200_WhenHasLanguage()
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var langAggregator = Substitute.For<IUserLangAggregator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
         var userLanguageQuery = new GetUserLanguageQuery
         {
@@ -78,11 +86,13 @@ public class UserLanguageTests
         };
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = JsonConvert.SerializeObject(new LanguageUserSelection()) };
-
-        mediatorSub.Send(userLanguageQuery, default).Returns(Task.FromResult(apiResponse));
+        
+        //mediatorSub.Send(userLanguageQuery, default).Returns(Task.FromResult(apiResponse));
+        langAggregator.GetUserLanguageQuery(userLanguageQuery).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(userLanguageQuery);
+        //var response = await mediatorSub.Send(userLanguageQuery);
+        var response = await langAggregator.GetUserLanguageQuery(userLanguageQuery);
         var languageUser = JsonConvert.DeserializeObject<LanguageUserSelection>(response.ResponseMessage);
 
         // Assert
@@ -103,7 +113,8 @@ public class UserLanguageTests
     public async Task SaveUserLanguage_ReturnsStatusCode404_WhenUserDoesNotExists(string language)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var langAggregator = Substitute.For<IUserLangAggregator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
         var saveUserLanguageCommand = new SaveUserLanguageCommand
         {
@@ -113,10 +124,12 @@ public class UserLanguageTests
 
         var apiResponse = new ApiResponse { StatusCode = 404, ResponseMessage = "The user does not exists." };
 
-        mediatorSub.Send(saveUserLanguageCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(saveUserLanguageCommand, default).Returns(Task.FromResult(apiResponse));
+        langAggregator.SaveUserLanguageCommand(saveUserLanguageCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(saveUserLanguageCommand);
+        //var response = await mediatorSub.Send(saveUserLanguageCommand);
+        var response = await langAggregator.SaveUserLanguageCommand(saveUserLanguageCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -133,7 +146,8 @@ public class UserLanguageTests
     public async Task SaveUserLanguage_ReturnsStatusCode200_WhenResultsAreOk(string language)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var langAggregator = Substitute.For<IUserLangAggregator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
         var saveUserLanguageCommand = new SaveUserLanguageCommand
         {
@@ -143,10 +157,12 @@ public class UserLanguageTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = JsonConvert.SerializeObject(new LanguageUserSelection()) };
 
-        mediatorSub.Send(saveUserLanguageCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(saveUserLanguageCommand, default).Returns(Task.FromResult(apiResponse));
+        langAggregator.SaveUserLanguageCommand(saveUserLanguageCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(saveUserLanguageCommand);
+        //var response = await mediatorSub.Send(saveUserLanguageCommand);
+        var response = await langAggregator.SaveUserLanguageCommand(saveUserLanguageCommand);
         var languageUser = JsonConvert.DeserializeObject<LanguageUserSelection>(response.ResponseMessage);
 
         // Assert
@@ -166,7 +182,8 @@ public class UserLanguageTests
     public async Task SaveUserLanguage_ReturnsStatusCode200_WhenSelectionAlreadyExists(string language)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var langAggregator = Substitute.For<IUserLangAggregator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
         var saveUserLanguageCommand = new SaveUserLanguageCommand
         {
@@ -176,10 +193,12 @@ public class UserLanguageTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = "The user language is already selected" };
 
-        mediatorSub.Send(saveUserLanguageCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(saveUserLanguageCommand, default).Returns(Task.FromResult(apiResponse));
+        langAggregator.SaveUserLanguageCommand(saveUserLanguageCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(saveUserLanguageCommand);
+        //var response = await mediatorSub.Send(saveUserLanguageCommand);
+        var response = await langAggregator.SaveUserLanguageCommand(saveUserLanguageCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -196,7 +215,8 @@ public class UserLanguageTests
     public async Task UpdateUserLanguage_ReturnsStatusCode200_WhenResultsAreOk(string language)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var langAggregator = Substitute.For<IUserLangAggregator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
         var userLanguageCommand = new UpdateUserLanguageCommand
         {
@@ -206,10 +226,12 @@ public class UserLanguageTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = JsonConvert.SerializeObject(new LanguageUserSelection()) };
 
-        mediatorSub.Send(userLanguageCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(userLanguageCommand, default).Returns(Task.FromResult(apiResponse));
+        langAggregator.UpdateUserLanguageCommand(userLanguageCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(userLanguageCommand);
+        //var response = await mediatorSub.Send(userLanguageCommand);
+        var response = await langAggregator.UpdateUserLanguageCommand(userLanguageCommand);
         var languageUser = JsonConvert.DeserializeObject<LanguageUserSelection>(response.ResponseMessage);
 
         // Assert
@@ -229,7 +251,8 @@ public class UserLanguageTests
     public async Task UpdateUserLanguage_ReturnsStatusCode204_WhenUserSelectionDoesNotExists(string language)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var langAggregator = Substitute.For<IUserLangAggregator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
         var userLanguageCommand = new UpdateUserLanguageCommand
         {
@@ -239,10 +262,12 @@ public class UserLanguageTests
 
         var apiResponse = new ApiResponse { StatusCode = 204, ResponseMessage = "The user language is not selected" };
 
-        mediatorSub.Send(userLanguageCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(userLanguageCommand, default).Returns(Task.FromResult(apiResponse));
+        langAggregator.UpdateUserLanguageCommand(userLanguageCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(userLanguageCommand);
+        //var response = await mediatorSub.Send(userLanguageCommand);
+        var response = await langAggregator.UpdateUserLanguageCommand(userLanguageCommand);
 
         // Assert
         Assert.NotNull(response);
@@ -259,7 +284,8 @@ public class UserLanguageTests
     public async Task UpdateUserLanguage_ReturnsStatusCode404_WhenUserDoesNotExists(string language)
     {
         // Arrange
-        var mediatorSub = Substitute.For<IMediator>();
+        //var mediatorSub = Substitute.For<IMediator>();
+        var langAggregator = Substitute.For<IUserLangAggregator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
         var userLanguageCommand = new UpdateUserLanguageCommand
         {
@@ -269,10 +295,12 @@ public class UserLanguageTests
 
         var apiResponse = new ApiResponse { StatusCode = 404, ResponseMessage = "The user does not exists." };
 
-        mediatorSub.Send(userLanguageCommand, default).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(userLanguageCommand, default).Returns(Task.FromResult(apiResponse));
+        langAggregator.UpdateUserLanguageCommand(userLanguageCommand).Returns(Task.FromResult(apiResponse));
 
         // Act
-        var response = await mediatorSub.Send(userLanguageCommand);
+        //var response = await mediatorSub.Send(userLanguageCommand);
+        var response = await langAggregator.UpdateUserLanguageCommand(userLanguageCommand);
 
         // Assert
         Assert.NotNull(response);

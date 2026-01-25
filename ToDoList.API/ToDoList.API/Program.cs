@@ -150,12 +150,12 @@ container.RegisterAssemblyTypes(typeof(GetUserAppInfoQueryHandler).GetTypeInfo()
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 container.RegisterAssemblyTypes(typeof(UpdateUserAppInfoCommandHandler).GetTypeInfo().Assembly)
 .AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(GetUserLanguageQueryHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(SaveUserLanguageCommandHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(UpdateUserLanguageCommandHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(GetUserLanguageQueryHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(SaveUserLanguageCommandHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(UpdateUserLanguageCommandHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
 //container.RegisterAssemblyTypes(typeof(InstructionQueryHandler).GetTypeInfo().Assembly)
 //.AsClosedTypesOf(typeof(IRequestHandler<,>));
 //container.RegisterAssemblyTypes(typeof(CreateTaskCommandHandler).GetTypeInfo().Assembly)
@@ -218,6 +218,9 @@ builder.Services.AddTransient<UpdateTaskCommandHandler>();
 builder.Services.AddTransient<GetUserTaskQueryHandler>();
 builder.Services.AddTransient<TaskTierByIdQueryHandler>();
 builder.Services.AddTransient<TaskTierQueryHandler>();
+builder.Services.AddTransient<GetUserLanguageQueryHandler>();
+builder.Services.AddTransient<SaveUserLanguageCommandHandler>();
+builder.Services.AddTransient<UpdateUserLanguageCommandHandler>();
 builder.Services.AddTransient<UseCaseDispatcher>();
 builder.Services.AddTransient<IUsersAppService, UsersAppService>();
 builder.Services.AddTransient<ITaskTierTranslatedService, TaskTierTranslatedService>();
@@ -235,6 +238,7 @@ builder.Services.AddTransient<IReportAggregator, ReportAggregator>();
 builder.Services.AddTransient<ITaskUserBinAggregator, TaskUserBinAggregator>();
 builder.Services.AddTransient<ITaskTierAggregator, TaskTierAggregator>();
 builder.Services.AddTransient<ITaskUserAggregator, TaskUserAggregator>();
+builder.Services.AddTransient<IUserLangAggregator, UserLangAggregator>();
 
 var app = builder.Build();
 
