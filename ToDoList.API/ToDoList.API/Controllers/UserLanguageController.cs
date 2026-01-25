@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Security.Claims;
+using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Commands;
 using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
@@ -14,10 +15,10 @@ namespace ToDoList.API.Controllers
     [Route("[controller]")]
     public class UserLanguageController : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public UserLanguageController(IMediator mediator)
+        private readonly IUserLangAggregator _aggregator;
+        public UserLanguageController(IUserLangAggregator aggregator)
         {
-            _mediator = mediator;
+            _aggregator = aggregator;
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace ToDoList.API.Controllers
                     UserId = userId
                 };
 
-                ApiResponse responseUserLanguage = await _mediator.Send(userLanguageCommand);
+                ApiResponse responseUserLanguage = await _aggregator.GetUserLanguageQuery(userLanguageCommand);
 
                 if (responseUserLanguage.StatusCode == 204)
                     return StatusCode(responseUserLanguage.StatusCode);
@@ -76,7 +77,7 @@ namespace ToDoList.API.Controllers
                     LanguageId = userLanguage
                 };
 
-                ApiResponse responseUserLanguage = await _mediator.Send(userLanguageCommand);
+                ApiResponse responseUserLanguage = await _aggregator.SaveUserLanguageCommand(userLanguageCommand);
 
                 if (responseUserLanguage.Response == null || responseUserLanguage.Response is false)
                     return StatusCode(responseUserLanguage.StatusCode, responseUserLanguage.Response);
@@ -110,7 +111,7 @@ namespace ToDoList.API.Controllers
                     LanguageId = userLanguage
                 };
 
-                ApiResponse responseUserLanguage = await _mediator.Send(userLanguageCommand);
+                ApiResponse responseUserLanguage = await _aggregator.UpdateUserLanguageCommand(userLanguageCommand);
 
                 if (responseUserLanguage.StatusCode == 204)
                     return StatusCode(responseUserLanguage.StatusCode);

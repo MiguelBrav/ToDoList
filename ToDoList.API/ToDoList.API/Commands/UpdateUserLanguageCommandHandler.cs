@@ -8,10 +8,11 @@ using System.Text;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Commands
 {
-    public class UpdateUserLanguageCommandHandler : IRequestHandler<UpdateUserLanguageCommand, ApiResponse>
+    public class UpdateUserLanguageCommandHandler : UseCaseBase<UpdateUserLanguageCommand, ApiResponse>
     {
 
         private readonly IUsersAppService _usersAppService;
@@ -27,7 +28,7 @@ namespace ToDoList.API.Commands
             _userLanguageService = userLanguageService;
         }
 
-        public async Task<ApiResponse> Handle(UpdateUserLanguageCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(UpdateUserLanguageCommand request)
         {
             ApiResponse response = new ApiResponse();
 
