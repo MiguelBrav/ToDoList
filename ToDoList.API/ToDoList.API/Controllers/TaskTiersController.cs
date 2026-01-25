@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
@@ -11,10 +12,10 @@ namespace ToDoList.API.Controllers
     [Route("[controller]")]
     public class TaskTiersController : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public TaskTiersController(IMediator mediator)
+        private readonly ITaskTierAggregator _aggregator;
+        public TaskTiersController(ITaskTierAggregator aggregator)
         {
-            _mediator = mediator;
+            _aggregator = aggregator;
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace ToDoList.API.Controllers
 
             TaskTierQuery command = new TaskTierQuery { LanguageId = languageId };
 
-            ApiResponse responseTaskTiers = await _mediator.Send(command);
+            ApiResponse responseTaskTiers = await _aggregator.TaskTierQuery(command);
 
             if (responseTaskTiers.Response == null || responseTaskTiers.Response is false)
                 return StatusCode(responseTaskTiers.StatusCode, responseTaskTiers.Response);
@@ -52,7 +53,7 @@ namespace ToDoList.API.Controllers
 
             TaskTierByIdQuery command = new TaskTierByIdQuery { TaskTierId = tasktierId, LanguageId = languageId };
 
-            ApiResponse responseInstruction = await _mediator.Send(command);
+            ApiResponse responseInstruction = await _aggregator.TaskTierByIdQuery(command);
 
             if (responseInstruction.Response == null || responseInstruction.Response is false)
                 return StatusCode(responseInstruction.StatusCode, responseInstruction.Response);
