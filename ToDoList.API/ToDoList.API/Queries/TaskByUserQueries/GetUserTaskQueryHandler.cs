@@ -5,13 +5,15 @@ using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ToDoList.API.Commands.TaskByUserCommands;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Queries.TaskByUserQueries
 {
-    public class GetUserTaskQueryHandler : IRequestHandler<GetUserTaskQuery, ApiResponse>
+    public class GetUserTaskQueryHandler : UseCaseBase<GetUserTaskQuery, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -35,7 +37,7 @@ namespace ToDoList.API.Queries.TaskByUserQueries
             _defaultLanguage = _configuration.GetValue<string>("DefaultLanguage");
         }
 
-        public async Task<ApiResponse> Handle(GetUserTaskQuery request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(GetUserTaskQuery request)
         {
             ApiResponse response = new ApiResponse();
 

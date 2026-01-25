@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Commands;
 using ToDoList.API.Commands.TaskByUserCommands;
 using ToDoList.API.Queries.TaskByUserQueries;
@@ -17,10 +18,10 @@ namespace ToDoList.API.Controllers
     [Route("[controller]")]
     public class TaskByUserController : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public TaskByUserController(IMediator mediator)
+        private readonly ITaskUserAggregator _aggregator;
+        public TaskByUserController(ITaskUserAggregator aggregator)
         {
-            _mediator = mediator;
+            _aggregator = aggregator;
         }
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace ToDoList.API.Controllers
                     Task = newTask
                 };
 
-                ApiResponse responseTasl = await _mediator.Send(taskCommand);
+                ApiResponse responseTasl = await _aggregator.CreateTaskCommand(taskCommand);
 
                 if (responseTasl.Response == null || responseTasl.Response is false)
                     return StatusCode(responseTasl.StatusCode, responseTasl.Response);
@@ -86,7 +87,7 @@ namespace ToDoList.API.Controllers
                     SizeId = sizeId
                 };
 
-                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+                ApiResponse responseTasks = await _aggregator.GetUserTaskQuery(taskCommand);
 
                 if (responseTasks.StatusCode == 204)
                     return StatusCode(responseTasks.StatusCode);
@@ -127,7 +128,7 @@ namespace ToDoList.API.Controllers
                     TaskIds = TaskIds
                 };
 
-                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+                ApiResponse responseTasks = await _aggregator.CancelTasksCommand(taskCommand);
 
                 if (responseTasks.Response == null || responseTasks.Response is false)
                     return StatusCode(responseTasks.StatusCode, responseTasks.Response);
@@ -159,7 +160,7 @@ namespace ToDoList.API.Controllers
                     UserId = userId
                 };
 
-                ApiResponse responseTasks = await _mediator.Send(taskCommand);
+                ApiResponse responseTasks = await _aggregator.CancelAllTasksCommand(taskCommand);
 
                 if (responseTasks.Response == null || responseTasks.Response is false)
                     return StatusCode(responseTasks.StatusCode, responseTasks.Response);
@@ -192,7 +193,7 @@ namespace ToDoList.API.Controllers
                     UpdateTask = updateTask
                 };
 
-                ApiResponse responseTask = await _mediator.Send(taskCommand);
+                ApiResponse responseTask = await _aggregator.UpdateTaskCommand(taskCommand);
 
                 if (responseTask.Response == null || responseTask.Response is false)
                     return StatusCode(responseTask.StatusCode, responseTask.Response);

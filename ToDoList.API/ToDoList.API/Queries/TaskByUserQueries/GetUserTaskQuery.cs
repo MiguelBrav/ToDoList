@@ -3,7 +3,7 @@ using ToDoList.DTO.ApiResponse;
 
 namespace ToDoList.API.Queries.TaskByUserQueries
 {
-    public class GetUserTaskQuery : IRequest<ApiResponse>
+    public class GetUserTaskQuery 
     {
         public string UserId { get; set; }
         public int PageId { get; set; }

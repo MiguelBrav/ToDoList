@@ -7,10 +7,11 @@ using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.DTO;
 using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Commands.TaskByUserCommands
 {
-    public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, ApiResponse>
+    public class UpdateTaskCommandHandler : UseCaseBase<UpdateTaskCommand, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -29,7 +30,7 @@ namespace ToDoList.API.Commands.TaskByUserCommands
             _configuration = configuration;
         }
 
-        public async Task<ApiResponse> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(UpdateTaskCommand request)
         {
             ApiResponse response = new ApiResponse();
 

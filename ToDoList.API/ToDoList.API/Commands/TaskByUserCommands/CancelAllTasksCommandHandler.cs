@@ -1,14 +1,12 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Identity;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
-using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Commands.TaskByUserCommands
 {
-    public class CancelAllTasksCommandHandler : IRequestHandler<CancelAllTasksCommand, ApiResponse>
+    public class CancelAllTasksCommandHandler : UseCaseBase<CancelAllTasksCommand, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -24,7 +22,7 @@ namespace ToDoList.API.Commands.TaskByUserCommands
             _taskUserService = taskUserService;
         }
 
-        public async Task<ApiResponse> Handle(CancelAllTasksCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(CancelAllTasksCommand request)
         {
             ApiResponse response = new ApiResponse();
 

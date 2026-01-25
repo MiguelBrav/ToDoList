@@ -5,10 +5,11 @@ using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Commands.TaskByUserCommands
 {
-    public class CancelTasksCommandHandler : IRequestHandler<CancelTasksCommand, ApiResponse>
+    public class CancelTasksCommandHandler : UseCaseBase<CancelTasksCommand, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -24,7 +25,7 @@ namespace ToDoList.API.Commands.TaskByUserCommands
             _taskUserService = taskUserService;
         }
 
-        public async Task<ApiResponse> Handle(CancelTasksCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(CancelTasksCommand request)
         {
             ApiResponse response = new ApiResponse();
 

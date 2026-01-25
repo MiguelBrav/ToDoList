@@ -5,10 +5,11 @@ using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Commands.TaskByUserCommands
 {
-    public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, ApiResponse>
+    public class CreateTaskCommandHandler : UseCaseBase<CreateTaskCommand, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -32,7 +33,7 @@ namespace ToDoList.API.Commands.TaskByUserCommands
             _defaultLanguage = _configuration.GetValue<string>("DefaultLanguage");
         }
 
-        public async Task<ApiResponse> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(CreateTaskCommand request)
         {
             ApiResponse response = new ApiResponse();
 
