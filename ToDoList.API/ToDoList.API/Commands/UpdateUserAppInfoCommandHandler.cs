@@ -1,17 +1,13 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Commands
 {
-    public class UpdateUserAppInfoCommandHandler : IRequestHandler<UpdateUserAppInfoCommand, ApiResponse>
+    public class UpdateUserAppInfoCommandHandler : UseCaseBase<UpdateUserAppInfoCommand, ApiResponse>
     {
 
         private readonly IUsersAppService _usersAppService;
@@ -25,7 +21,7 @@ namespace ToDoList.API.Commands
            
         }
 
-        public async Task<ApiResponse> Handle(UpdateUserAppInfoCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(UpdateUserAppInfoCommand request)
         {
             ApiResponse response = new ApiResponse();
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Commands;
 using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
@@ -15,10 +16,10 @@ namespace ToDoList.API.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersAppController : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public UsersAppController(IMediator mediator)
+        private readonly IUserAppAggregator _aggregator;
+        public UsersAppController(IUserAppAggregator aggregator)
         {
-            _mediator = mediator;
+            _aggregator = aggregator;
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace ToDoList.API.Controllers
                   UserId = userId
                 };
 
-                ApiResponse responseUserInformation = await _mediator.Send(userInformationCommand);
+                ApiResponse responseUserInformation = await _aggregator.GetUserAppInfoQuery(userInformationCommand);
 
                 if (responseUserInformation.Response == null || responseUserInformation.Response is false)
                     return StatusCode(responseUserInformation.StatusCode, responseUserInformation.Response);
@@ -75,7 +76,7 @@ namespace ToDoList.API.Controllers
                     Gender = updateUserInfo.Gender
                 };
 
-                ApiResponse responseUserInformation = await _mediator.Send(userInformationCommand);
+                ApiResponse responseUserInformation = await _aggregator.UpdateUserAppInfoCommand(userInformationCommand);
 
                 if (responseUserInformation.Response == null || responseUserInformation.Response is false)
                     return StatusCode(responseUserInformation.StatusCode, responseUserInformation.Response);
