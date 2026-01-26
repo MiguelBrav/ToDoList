@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;

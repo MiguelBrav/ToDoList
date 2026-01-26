@@ -1,7 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Identity;
 using ToDoList.DTO.ApiResponse;
 using UseCaseCore.UseCases;
 

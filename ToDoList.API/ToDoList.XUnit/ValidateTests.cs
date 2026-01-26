@@ -1,6 +1,4 @@
-﻿using MediatR;
-using NSubstitute;
-using ToDoList.API.Aggregators;
+﻿using NSubstitute;
 using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Commands;
 using ToDoList.DTO.ApiResponse;

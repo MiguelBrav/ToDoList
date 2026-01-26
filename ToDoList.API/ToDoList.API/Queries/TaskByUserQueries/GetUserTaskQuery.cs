@@ -1,7 +1,4 @@
-﻿using MediatR;
-using ToDoList.DTO.ApiResponse;
-
-namespace ToDoList.API.Queries.TaskByUserQueries
+﻿namespace ToDoList.API.Queries.TaskByUserQueries
 {
     public class GetUserTaskQuery 
     {
