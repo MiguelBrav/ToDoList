@@ -1,7 +1,4 @@
-﻿using MediatR;
-using ToDoList.DTO.ApiResponse;
-
-namespace ToDoList.API.Commands.AdminCommands
+﻿namespace ToDoList.API.Commands.AdminCommands
 {
     public class UserAdminCommand
     {

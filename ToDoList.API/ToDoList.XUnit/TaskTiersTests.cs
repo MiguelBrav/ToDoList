@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using NSubstitute;
 using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Queries;

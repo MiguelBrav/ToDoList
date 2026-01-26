@@ -1,10 +1,6 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Newtonsoft.Json;
-using ToDoList.API.Commands.TaskByUserBinCommands;
+﻿using Microsoft.AspNetCore.Identity;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
-using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
 using UseCaseCore.UseCases;
 

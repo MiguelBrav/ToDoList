@@ -1,13 +1,6 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿using Microsoft.AspNetCore.Identity;
 using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
-using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
 using UseCaseCore.UseCases;
 
