@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Security.Claims;
+using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Commands;
 using ToDoList.DTO.ApiResponse;
 
@@ -12,10 +13,10 @@ namespace ToDoList.API.Controllers
     [Route("[controller]")]
     public class ValidateController : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public ValidateController(IMediator mediator)
+        private readonly IValidateAggregator _aggregator;
+        public ValidateController(IValidateAggregator aggregator)
         {
-            _mediator = mediator;
+            _aggregator = aggregator;
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace ToDoList.API.Controllers
                     UserId = userId
                 };
 
-                ApiResponse responseUser = await _mediator.Send(validateTokenCommand);
+                ApiResponse responseUser = await _aggregator.ValidateTokenCommand(validateTokenCommand);
 
                 if (responseUser.Response == null || responseUser.Response is false)
                     return StatusCode(responseUser.StatusCode, responseUser.Response);
