@@ -140,16 +140,16 @@ container.RegisterAssemblyTypes(typeof(ValidateTokenCommandHandler).GetTypeInfo(
 //.AsClosedTypesOf(typeof(IRequestHandler<,>));
 //container.RegisterAssemblyTypes(typeof(GendersQueryHandler).GetTypeInfo().Assembly)
 //.AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(UserProfileCommandHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(UpdateUserProfileCommandHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(DeleteUserProfileCommandHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(GetUserAppInfoQueryHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(UpdateUserAppInfoCommandHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(UserProfileCommandHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(UpdateUserProfileCommandHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(DeleteUserProfileCommandHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(GetUserAppInfoQueryHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(UpdateUserAppInfoCommandHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
 //container.RegisterAssemblyTypes(typeof(GetUserLanguageQueryHandler).GetTypeInfo().Assembly)
 //.AsClosedTypesOf(typeof(IRequestHandler<,>));
 //container.RegisterAssemblyTypes(typeof(SaveUserLanguageCommandHandler).GetTypeInfo().Assembly)
@@ -172,8 +172,8 @@ container.RegisterAssemblyTypes(typeof(UpdateUserAppInfoCommandHandler).GetTypeI
 //.AsClosedTypesOf(typeof(IRequestHandler<,>));
 //container.RegisterAssemblyTypes(typeof(UpdateTaskCommandHandler).GetTypeInfo().Assembly)
 //.AsClosedTypesOf(typeof(IRequestHandler<,>));
-container.RegisterAssemblyTypes(typeof(RestoreTasksCommandHandler).GetTypeInfo().Assembly)
-.AsClosedTypesOf(typeof(IRequestHandler<,>));
+//container.RegisterAssemblyTypes(typeof(RestoreTasksCommandHandler).GetTypeInfo().Assembly)
+//.AsClosedTypesOf(typeof(IRequestHandler<,>));
 //container.RegisterAssemblyTypes(typeof(CleanTasksCommandHandler).GetTypeInfo().Assembly)
 //.AsClosedTypesOf(typeof(IRequestHandler<,>));
 //container.RegisterAssemblyTypes(typeof(CleansAllTasksCommandHandler).GetTypeInfo().Assembly)
@@ -224,6 +224,8 @@ builder.Services.AddTransient<UpdateUserLanguageCommandHandler>();
 builder.Services.AddTransient<DeleteUserProfileCommandHandler>();
 builder.Services.AddTransient<UpdateUserProfileCommandHandler>();
 builder.Services.AddTransient<UserProfileCommandHandler>();
+builder.Services.AddTransient<UpdateUserAppInfoCommandHandler>();
+builder.Services.AddTransient<GetUserAppInfoQueryHandler>();
 builder.Services.AddTransient<UseCaseDispatcher>();
 builder.Services.AddTransient<IUsersAppService, UsersAppService>();
 builder.Services.AddTransient<ITaskTierTranslatedService, TaskTierTranslatedService>();
@@ -243,6 +245,7 @@ builder.Services.AddTransient<ITaskTierAggregator, TaskTierAggregator>();
 builder.Services.AddTransient<ITaskUserAggregator, TaskUserAggregator>();
 builder.Services.AddTransient<IUserLangAggregator, UserLangAggregator>();
 builder.Services.AddTransient<IUserProfAggregator, UserProfAggregator>();
+builder.Services.AddTransient<IUserAppAggregator, UserAppAggregator>();
 
 var app = builder.Build();
 
