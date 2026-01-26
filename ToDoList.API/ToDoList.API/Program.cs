@@ -221,6 +221,9 @@ builder.Services.AddTransient<TaskTierQueryHandler>();
 builder.Services.AddTransient<GetUserLanguageQueryHandler>();
 builder.Services.AddTransient<SaveUserLanguageCommandHandler>();
 builder.Services.AddTransient<UpdateUserLanguageCommandHandler>();
+builder.Services.AddTransient<DeleteUserProfileCommandHandler>();
+builder.Services.AddTransient<UpdateUserProfileCommandHandler>();
+builder.Services.AddTransient<UserProfileCommandHandler>();
 builder.Services.AddTransient<UseCaseDispatcher>();
 builder.Services.AddTransient<IUsersAppService, UsersAppService>();
 builder.Services.AddTransient<ITaskTierTranslatedService, TaskTierTranslatedService>();
@@ -239,6 +242,7 @@ builder.Services.AddTransient<ITaskUserBinAggregator, TaskUserBinAggregator>();
 builder.Services.AddTransient<ITaskTierAggregator, TaskTierAggregator>();
 builder.Services.AddTransient<ITaskUserAggregator, TaskUserAggregator>();
 builder.Services.AddTransient<IUserLangAggregator, UserLangAggregator>();
+builder.Services.AddTransient<IUserProfAggregator, UserProfAggregator>();
 
 var app = builder.Build();
 
