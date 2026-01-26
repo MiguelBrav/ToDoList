@@ -1,17 +1,11 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
-using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Commands
 {
-    public class ValidateTokenCommandHandler : IRequestHandler<ValidateTokenCommand, ApiResponse>
+    public class ValidateTokenCommandHandler : UseCaseBase<ValidateTokenCommand, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -22,7 +16,7 @@ namespace ToDoList.API.Commands
             _userManager = userManager;
         }
 
-        public async Task<ApiResponse> Handle(ValidateTokenCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(ValidateTokenCommand request)
         {
             ApiResponse response = new ApiResponse();
 
