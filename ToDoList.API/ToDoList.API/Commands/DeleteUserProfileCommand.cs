@@ -1,9 +1,6 @@
-﻿using MediatR;
-using ToDoList.DTO.ApiResponse;
-
-namespace ToDoList.API.Commands
+﻿namespace ToDoList.API.Commands
 {
-    public class DeleteUserProfileCommand : IRequest<ApiResponse>
+    public class DeleteUserProfileCommand
     {
         public string UserId { get; set; }
 	}

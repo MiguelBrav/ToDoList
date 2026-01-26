@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using ToDoList.API.Aggregators.Interfaces;
 using ToDoList.API.Commands;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
@@ -13,10 +14,10 @@ namespace ToDoList.API.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserProfileController : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public UserProfileController(IMediator mediator)
+        private readonly IUserProfAggregator _aggregator;
+        public UserProfileController(IUserProfAggregator aggregator)
         {
-            _mediator = mediator;
+            _aggregator = aggregator;
         }
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace ToDoList.API.Controllers
                 };
 
 
-             ApiResponse responseImage = await _mediator.Send(userProfileCommand);
+             ApiResponse responseImage = await _aggregator.UserProfileCommand(userProfileCommand);
 
              if (responseImage.Response == null || responseImage.Response is false)
                 return StatusCode(responseImage.StatusCode, responseImage.Response);
@@ -81,7 +82,7 @@ namespace ToDoList.API.Controllers
                 };
 
 
-                ApiResponse responseImage = await _mediator.Send(userProfileCommand);
+                ApiResponse responseImage = await _aggregator.UpdateUserProfileCommand(userProfileCommand);
 
                 if (responseImage.StatusCode == 204)
                     return StatusCode(responseImage.StatusCode);
@@ -114,7 +115,7 @@ namespace ToDoList.API.Controllers
                     UserId = userId
                 };
 
-                ApiResponse responseImage = await _mediator.Send(userProfileCommand);
+                ApiResponse responseImage = await _aggregator.DeleteUserProfileCommand(userProfileCommand);
 
                 if (responseImage.StatusCode == 204)
                     return StatusCode(responseImage.StatusCode);

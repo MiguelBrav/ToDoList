@@ -9,10 +9,11 @@ using ToDoList.Domain.Interfaces;
 using ToDoList.DTO.ApiResponse;
 using ToDoList.DTO.Translated;
 using ToDoList.DTO.UsersApp;
+using UseCaseCore.UseCases;
 
 namespace ToDoList.API.Commands
 {
-    public class UserProfileCommandHandler : IRequestHandler<UserProfileCommand, ApiResponse>
+    public class UserProfileCommandHandler : UseCaseBase<UserProfileCommand, ApiResponse>
     {
         private readonly IUsersAppService _usersAppService;
 
@@ -27,7 +28,7 @@ namespace ToDoList.API.Commands
             _usersProfileService = usersProfileService;
         }
 
-        public async Task<ApiResponse> Handle(UserProfileCommand request, CancellationToken cancellationToken)
+        public override async Task<ApiResponse> Execute(UserProfileCommand request)
         {
             ApiResponse response = new ApiResponse();
 
