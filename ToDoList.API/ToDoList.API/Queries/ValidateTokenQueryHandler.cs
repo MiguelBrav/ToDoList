@@ -3,20 +3,20 @@ using Newtonsoft.Json;
 using ToDoList.DTO.ApiResponse;
 using UseCaseCore.UseCases;
 
-namespace ToDoList.API.Commands
+namespace ToDoList.API.Queries
 {
-    public class ValidateTokenCommandHandler : UseCaseBase<ValidateTokenCommand, ApiResponse>
+    public class ValidateTokenQueryHandler : UseCaseBase<ValidateTokenQuery, ApiResponse>
     {
 
         private readonly UserManager<IdentityUser> _userManager;
 
 
-        public ValidateTokenCommandHandler(UserManager<IdentityUser> userManager)
+        public ValidateTokenQueryHandler(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
         }
 
-        public override async Task<ApiResponse> Execute(ValidateTokenCommand request)
+        public override async Task<ApiResponse> Execute(ValidateTokenQuery request)
         {
             ApiResponse response = new ApiResponse();
 

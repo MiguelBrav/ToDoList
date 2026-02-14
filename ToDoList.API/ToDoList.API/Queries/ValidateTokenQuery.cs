@@ -1,6 +1,6 @@
-﻿namespace ToDoList.API.Commands
+﻿namespace ToDoList.API.Queries
 {
-    public class ValidateTokenCommand 
+    public class ValidateTokenQuery 
     {
 		public string Email { get; set; }
 		public string UserId { get; set; }

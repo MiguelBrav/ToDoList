@@ -1,6 +1,6 @@
 ﻿using NSubstitute;
 using ToDoList.API.Aggregators.Interfaces;
-using ToDoList.API.Commands;
+using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 using Xunit;
 
@@ -17,7 +17,7 @@ public class ValidateTests
         //var mediatorSub = Substitute.For<IMediator>();
         var validateAggregator = Substitute.For<IValidateAggregator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
-        var tokenCommand = new ValidateTokenCommand
+        var tokenQuery = new ValidateTokenQuery
         {
             Email = email,
             UserId = userId
@@ -25,12 +25,12 @@ public class ValidateTests
 
         var apiResponse = new ApiResponse { StatusCode = 404, ResponseMessage = "The user does not exists." };
 
-        //mediatorSub.Send(tokenCommand, default).Returns(Task.FromResult(apiResponse));
-        validateAggregator.ValidateTokenCommand(tokenCommand).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(tokenQuery, default).Returns(Task.FromResult(apiResponse));
+        validateAggregator.ValidateTokenQuery(tokenQuery).Returns(Task.FromResult(apiResponse));
 
         // Act
-        //var response = await mediatorSub.Send(tokenCommand);
-        var response = await validateAggregator.ValidateTokenCommand(tokenCommand);
+        //var response = await mediatorSub.Send(tokenQuery);
+        var response = await validateAggregator.ValidateTokenQuery(tokenQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -50,7 +50,7 @@ public class ValidateTests
         //var mediatorSub = Substitute.For<IMediator>();
         var validateAggregator = Substitute.For<IValidateAggregator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
-        var tokenCommand = new ValidateTokenCommand
+        var tokenQuery = new ValidateTokenQuery
         {
             Email = email,
             UserId = userId
@@ -58,12 +58,12 @@ public class ValidateTests
 
         var apiResponse = new ApiResponse { StatusCode = 400, ResponseMessage = "The token is not valid." };
 
-        //mediatorSub.Send(tokenCommand, default).Returns(Task.FromResult(apiResponse));
-        validateAggregator.ValidateTokenCommand(tokenCommand).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(tokenQuery, default).Returns(Task.FromResult(apiResponse));
+        validateAggregator.ValidateTokenQuery(tokenQuery).Returns(Task.FromResult(apiResponse));
 
         // Act
-        //var response = await mediatorSub.Send(tokenCommand);
-        var response = await validateAggregator.ValidateTokenCommand(tokenCommand);
+        //var response = await mediatorSub.Send(tokenQuery);
+        var response = await validateAggregator.ValidateTokenQuery(tokenQuery);
 
         // Assert
         Assert.NotNull(response);
@@ -84,7 +84,7 @@ public class ValidateTests
         //var mediatorSub = Substitute.For<IMediator>();
         var validateAggregator = Substitute.For<IValidateAggregator>();
         string userId = Guid.NewGuid().ToString(); // UserId mock
-        var tokenCommand = new ValidateTokenCommand
+        var tokenQuery = new ValidateTokenQuery
         {
             Email = email,
             UserId = userId
@@ -92,12 +92,12 @@ public class ValidateTests
 
         var apiResponse = new ApiResponse { StatusCode = 200, ResponseMessage = "The token is valid." };
 
-        //mediatorSub.Send(tokenCommand, default).Returns(Task.FromResult(apiResponse));
-        validateAggregator.ValidateTokenCommand(tokenCommand).Returns(Task.FromResult(apiResponse));
+        //mediatorSub.Send(tokenQuery, default).Returns(Task.FromResult(apiResponse));
+        validateAggregator.ValidateTokenQuery(tokenQuery).Returns(Task.FromResult(apiResponse));
 
         // Act
-        //var response = await mediatorSub.Send(tokenCommand);
-        var response = await validateAggregator.ValidateTokenCommand(tokenCommand);
+        //var response = await mediatorSub.Send(tokenQuery);
+        var response = await validateAggregator.ValidateTokenQuery(tokenQuery);
 
         // Assert
         Assert.NotNull(response);

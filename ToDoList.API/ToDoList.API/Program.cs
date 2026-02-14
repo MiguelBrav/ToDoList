@@ -163,7 +163,7 @@ internal class Program
         builder.Services.AddTransient<UserProfileCommandHandler>();
         builder.Services.AddTransient<UpdateUserAppInfoCommandHandler>();
         builder.Services.AddTransient<GetUserAppInfoQueryHandler>();
-        builder.Services.AddTransient<ValidateTokenCommandHandler>();
+        builder.Services.AddTransient<ValidateTokenQueryHandler>();
         builder.Services.AddTransient<UseCaseDispatcher>();
         builder.Services.AddTransient<IUsersAppService, UsersAppService>();
         builder.Services.AddTransient<ITaskTierTranslatedService, TaskTierTranslatedService>();

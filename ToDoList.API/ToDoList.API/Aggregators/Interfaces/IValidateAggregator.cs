@@ -1,4 +1,4 @@
-﻿using ToDoList.API.Commands;
+﻿using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 
 namespace ToDoList.API.Aggregators.Interfaces;
@@ -6,5 +6,5 @@ namespace ToDoList.API.Aggregators.Interfaces;
 public interface IValidateAggregator
 {
     // Commands
-    public Task<ApiResponse> ValidateTokenCommand(ValidateTokenCommand request);
+    public Task<ApiResponse> ValidateTokenQuery(ValidateTokenQuery request);
 }

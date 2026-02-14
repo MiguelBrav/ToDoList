@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.API.Aggregators.Interfaces;
-using ToDoList.API.Commands;
+using ToDoList.API.Queries;
 using ToDoList.DTO.ApiResponse;
 
 namespace ToDoList.API.Controllers
@@ -19,7 +19,7 @@ namespace ToDoList.API.Controllers
         /// <summary>
         /// This method is only to validate the token created.
         /// </summary>
-        [HttpPost]
+        [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Route("validate")]
         public async Task<IActionResult> ValidateToken()
@@ -35,13 +35,13 @@ namespace ToDoList.API.Controllers
 
                 var userId = userClaim.Value;
 
-                ValidateTokenCommand validateTokenCommand = new ValidateTokenCommand()
+                ValidateTokenQuery validateTokenQuery = new ValidateTokenQuery()
                 {
                     Email = email,
                     UserId = userId
                 };
 
-                ApiResponse responseUser = await _aggregator.ValidateTokenCommand(validateTokenCommand);
+                ApiResponse responseUser = await _aggregator.ValidateTokenQuery(validateTokenQuery);
 
                 if (responseUser.Response == null || responseUser.Response is false)
                     return StatusCode(responseUser.StatusCode, responseUser.Response);
