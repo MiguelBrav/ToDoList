@@ -20,6 +20,7 @@ using ToDoList.Domain.Helper;
 using ToDoList.Domain.Interfaces;
 using ToDoList.Infraestructure;
 using ToDoList.Infraestructure.Repositories;
+using ToDoList.API.Configurations;
 using UseCaseCore.UseCases;
 
 internal class Program
@@ -82,33 +83,58 @@ internal class Program
 
         });
 
-        builder.Services.AddDbContext<AppDBContext>(options =>
-        //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-        //sqlServerOptions => {
-        //    sqlServerOptions.EnableRetryOnFailure(
-        //        maxRetryCount: 5,
-        //        maxRetryDelay: TimeSpan.FromSeconds(60),
-        //        errorNumbersToAdd: null
-        //        );
-        //    sqlServerOptions.CommandTimeout(60);
-        //}), ServiceLifetime.Transient);
+        //builder.Services.AddDbContext<AppDBContext>(options =>
+        ////options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        ////sqlServerOptions => {
+        ////    sqlServerOptions.EnableRetryOnFailure(
+        ////        maxRetryCount: 5,
+        ////        maxRetryDelay: TimeSpan.FromSeconds(60),
+        ////        errorNumbersToAdd: null
+        ////        );
+        ////    sqlServerOptions.CommandTimeout(60);
+        ////}), ServiceLifetime.Transient);
 
-        options.UseMySql(
-            builder.Configuration.GetConnectionString("DefaultConnection"),
-            ServerVersion.AutoDetect(
-                builder.Configuration.GetConnectionString("DefaultConnection")
-            ),
-            mySqlOptions =>
-            {
-                mySqlOptions.CommandTimeout(60);
-                mySqlOptions.EnableRetryOnFailure(
-                    maxRetryCount: 5,
-                    maxRetryDelay: TimeSpan.FromSeconds(60),
-                    errorNumbersToAdd: null
-                );
-            }
-        ),
-        ServiceLifetime.Transient);
+        //options.UseMySql(
+        //    builder.Configuration.GetConnectionString("DefaultConnection"),
+        //    ServerVersion.AutoDetect(
+        //        builder.Configuration.GetConnectionString("DefaultConnection")
+        //    ),
+        //    mySqlOptions =>
+        //    {
+        //        mySqlOptions.CommandTimeout(60);
+        //        mySqlOptions.EnableRetryOnFailure(
+        //            maxRetryCount: 5,
+        //            maxRetryDelay: TimeSpan.FromSeconds(60),
+        //            errorNumbersToAdd: null
+        //        );
+        //    }
+        //),
+        //ServiceLifetime.Transient);
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        ServerVersion serverVersion;
+        try
+        {
+            serverVersion = ServerVersion.AutoDetect(connectionString);
+        }
+        catch
+        {
+            serverVersion = new MySqlServerVersion(new Version(8, 0, 33));
+        }
+
+        builder.Services.AddDbContext<AppDBContext>(options =>
+            options.UseMySql(
+                connectionString,
+                serverVersion,
+                mySqlOptions =>
+                {
+                    mySqlOptions.CommandTimeout(60);
+                    mySqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(60),
+                        errorNumbersToAdd: null
+                    );
+                }
+            ), ServiceLifetime.Transient);
 
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -126,6 +152,9 @@ internal class Program
         builder.Services.AddIdentity<IdentityUser, IdentityRole>()
            .AddEntityFrameworkStores<AppDBContext>()
            .AddDefaultTokenProviders();
+
+        builder.Services.AddHealthChecks()
+            .AddCheck<DbContextHealthCheck>("AppDBContext", tags: new[] { "database" });
 
         builder.Services.AddAuthorization(options =>
         {
@@ -194,6 +223,11 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.MapHealthChecks("/healthz", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+        {
+            ResponseWriter = HealthCheckResponse.WriteResponse
+        });
 
         app.UseHttpsRedirection();
 
