@@ -41,6 +41,7 @@ To run tests, run AccountTests.cs from project ToDoList.XUnit
 ## Versioning
 
 Updated from .NET 6 to .NET 8 (02/01/2026)
+Updated from .NET 8 to .NET 10 (03/10/2026)
 
 ## Package References
 
